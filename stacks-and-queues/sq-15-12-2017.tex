@@ -1,0 +1,145 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning,shapes,arrows}
+\usetikzlibrary{calc,shapes.multipart,chains,automata,positioning,shapes,arrows,backgrounds,fit}
+\usetikzlibrary{matrix,backgrounds}
+
+\author{Sujit Chakrabarti}
+\title{Stacks and Queues}
+\date{}
+
+\begin{document}
+\definecolor{lightblue}{rgb}{0.8,0.93,1.0} % color values Red, Green, Blue
+\definecolor{Blue}{rgb}{0,0,1.0} % color values Red, Green, Blue
+\definecolor{Red}{rgb}{1,0,0} % color values Red, Green, Blue
+\definecolor{Purple}{rgb}{0.5,0,0.5}
+\definecolor{Pink}{rgb}{0.7,0,0.2}
+
+\newcommand{\highlight}[1]{{\color{Red}(#1)}}
+\newcommand{\comment}[1]{{\color{Blue}#1}}
+
+\lstset{
+	language = Java,
+	basicstyle = \ttfamily\scriptsize,
+	stringstyle = \ttfamily\scriptsize,
+	keywordstyle=\color{black}\scriptsize,
+	identifierstyle=\color{black}\scriptsize,
+	frameround=tttt,
+	numbers=none,
+	showstringspaces=false
+}
+
+\maketitle
+
+\section{Abstract Data Types and Data Structures}
+In one of our earlier modules we had discussed about two data structures: \emph{array lists} and \emph{linked lists}. We had how both are implementations of the same abstract data type \emph{list}. We had talked about the various capabilities and properties of lists, and how they could be used in solving practical software development problems (recall \emph{Institute Management System}). We had discussed how, despite being functionally nearly identical to each other, array lists and linked lists are really quite different from each other. In particular, when you take into account, their performance aspects, we observe that each of them fairs better than the other in certain scenarios, and worse in certain others. For example, getting a value by its index is typically much faster in an array list. However, adding/removing an element at an arbitrary location may be faster in a linked list.
+
+Through the \emph{Algorithms} course, now we have gathered enough conceptual ammunition so that we can launch into a more detailed discussion on more data structures and understand their capabilities and performance metrics.
+
+In the upcoming several videos we will get introduced to a number of other data structures.
+
+\section{Data Structures}
+Algorithms are computational procedures which deal with data. They create them, modify them and refer to them time to time. In order to deliver good results, your algorithms need the program data to be arranged in a way suitable for the purpose. A well arranged data will make it easy to implement algorithms -- and software systems in general -- that not only are fast and efficient, but are also flexible while being robust and secure. Hence, how the data is arranged within a program is a crucial question that must be answered at a very early stage of design of a program.
+
+The subject of \emph{data structures} is the study of some of these `arrangements' of data which have been found useful by software developers in a variety of scenarios. While studying a data structure, our aim should be to understand:
+\begin{enumerate}
+\item What are their capabilities?
+\item In what scenarios can they be used and how?
+\item What are various implementations and how do they compare in terms of performance (space/time)?
+\end{enumerate}
+
+\section{Abstract Data Types}
+I have been using two terms -- \emph{abstract data types} and \emph{data structures} -- apparently synonymously. While they are indeed somewhat similar, they aren't exactly the same. And while in general it's OK to use them a bit interchangeably, it's important that we know the difference.
+
+Abstract data type is the definition of the interface (i.e. the properties and capabilities) of a data arrangement. Data structure is a specific implementation. For example, list is an ADT (where the elements are linearly sequence, each associated with an index or position represented by a non-negative integer); linked list is an implementation. In other words, there may be multiple data structures which implement the same ADT. Having said that, we repeat that we use these two terms as near synonyms. We hope that the context will make the distinction clear. If not, we will clarify the difference.
+
+With that, let's talk of data structures, beginning with \emph{stacks}.
+
+\section{Stacks}
+Consider a stack of clothes -- or plates -- or some such things. If all clothes in that stack are identical, and you were to pick one from it, from which portion of it would you pick it? From the top? From the bottom? Or from somewhere in between? Of course, any sane person would pick it up from the top. Trying to pull out a piece of clothing from anywhere else in the stack would be possible, but would lead to difficulties, and untoward results. In the same manner, if you were to add a clothe to this stack, where would you prefer to add it? Again, at the the top, of course. And if that's the way things are added to and removed from this stack, what can be said about the relation between the order of insertion of things into and their removal from the stack?
+
+It turns out that the relation is quite simple: what goes in last is the first to come out. This property of the above structure is called \emph{last in first out} (or LIFO) order. To give another example slightly closer to computation, think about a busy day at office which full of interruptions. Each task takes a fairly long time to complete. In between there are interruptions. And if there are interruptions, they must immediately be handled. The task you were doing in the beginning, say $T_1$, has to be paused to attend to the interrupt say $T_2$, and should be resumed when $T_2$ is completely handled. To make things more interesting, the task $T_3$ that interrupts the first task may in turn get interrupted by some other task $T_3$, which further could get interrupted by something else.
+
+To keep track of your task, you would probably like to maintain a to-do list. But this to-do list is a bit different from the usual to-do lists (where completed tasks get added at the bottom, and typically, the one at the top is the first get checked off, i.e. completed). Here, the task at the bottom of this list is the one you are currently at. It was also the last one to be added, and it will be the first one to be checked off. Once a task gets done, it gets checked off, and the task immediately above it in the list (which it had interrupted) now becomes the current task. Again, the LIFO principle is followed in the scenario.
+
+In real life, and in computing, there happen umpteen instances wherein things have to inserted into \emph{something} and removed from it in a LIFO order. These somethings -- at least in computer science -- are called stacks. A stack is therefore anything:
+\begin{enumerate}
+\item into which you insert (\emph{push}) and remove (\emph{pop}) things from one end of it.
+\item that follows LIFO rule.
+\end{enumerate}
+
+Examples? Think about a Internet browser and how it implements the functionality of the famous `Back' button.
+
+Compilers -- programs which take your program and turns it into a program in some other language, like machine language or byte code -- do a very important thing called \emph{parsing}. Parsing, in simple language, means reading. A compiler really uses parsing to figure out if a program it's compiling is really well-formed or not. For a program to successfully compile, it's necessary but not sufficient that it should be well-formed. If a program is not well-formed, i.e. if it's ill-formed, the compiler will typically detect that, and will flag a syntax error. Parsing is a mind-blowingly complex process. But, worry not. We don't go there. What's interesting to us is that it uses stacks, among other things, a lot for parsing, and for many other things that it does.
+
+\section{Example -- Balanced Parentheses}
+
+\subsection{Single Type Parentheses}
+Let's pick out a tiny portion of the parsing problem to understand where stacks come into picture in compiling. Let's just remove everything else from our language, leaving out only parentheses. One of the things that must happen for a program to be well-formed is that all its parentheses should match, i.e. if there's an open parenthesis anywhere in the program, there must also be a corresponding closing parenthesis. Obviously, the closing parenthesis must follow, and not precede, its corresponding open paren. For example, \texttt{"(())"} and \texttt{"()()"} are well-formed strings, but \texttt{")("} is not. So, having an equal number of open and close parens is necessary but not sufficient for a string to well-formed.
+
+How do you find out if a string of parentheses is well-formed? For this simple language, an equally simple approach works.
+\begin{algorithm}
+\begin{enumerate}
+\item Initialise variable $count$ to 0.
+\item Scan the string from left to right.
+\item As you go symbol by symbol, whenever you meet an open paren, increase $count$ by 1.
+\item If you meet a close paren, decrease $count$ by 1. However, if $count$ is already 0, it means error; so return false.
+\item If you reach the end of string, and $count = 0$, it means that the string is well-formed; so return true. Otherwise, return false. 
+\end{enumerate}
+\caption{Matching Parentheses using $count$}
+\label{a:mp1}
+\end{algorithm}
+
+(\textbf{code:} \texttt{code/Paren1.java})
+
+The same could be implemented using a stack. 
+
+\begin{algorithm}
+\begin{enumerate}
+\item Initialise stack $S$ to be empty.
+\item Scan the string from left to right.
+\item As you go symbol by symbol, whenever you meet an open paren, push \texttt{'('} into $S$.
+\item If you meet a close paren, pop a \texttt{'('} from $S$. However, if $S$ is already empty, it means error; so return false.
+\item If you reach the end of string, and $S$, it means that the string is well-formed; so return true. Otherwise, return false. 
+\end{enumerate}
+\caption{Matching Parentheses using stack}
+\label{a:mp2}
+\end{algorithm}
+
+(\textbf{code:} \texttt{code/Paren2.java})
+
+Although, this example doesn't necessarily need a stack to be used, it helps us get introduced to what operations can typically be done with a stack. Here, we do a \emph{push}, when we see an open paren; and we do a \emph{pop} when we see a close paren. Moreover, we check if the stack is empty or not at two places: i.e. everytime we see a close paren, and at the very end when the entire string has been seen.
+
+\subsection{Multiple Type Parentheses}
+Algorithm~\ref{a:mp1} works well when there's only one variety of parentheses. Let's enrich our language to have two types of brackets: parentheses (\texttt{'('}) and braces (\texttt{'\{'}). Can we modify the approach to deal with this variant? Having one count will clearly not work. This algorithm will accept strings "(\}" as well formed as it's not even equipped to deal with the two types of brackets separately. An obviously extension, therefore, would be to have two counts: $count1$ for parentheses and $count2$ for braces. It will correctly accept all well-formed strings. It will correctly reject some of the ill-formed strings. Unfortunately, it will fail to detect strings where both the parentheses and braces are individually matched, but their relative positions are messed up, e.g. \texttt{"(\{)\}"}. We have to conclude that the count based approach is too weak to work when there are multiple types of brackets to deal with.
+
+This variant of the balanced parenthesis problem does indeed bring out the power of a stack based approach. Algorithm~\ref{a:mp3} modifies algorithm~\ref{a:mp2} to deal with the multiple bracket problem.
+
+
+\begin{algorithm}
+\begin{enumerate}
+\item Initialise stack $S$ to be empty.
+\item Scan the string from left to right.
+\item As you go symbol by symbol, whenever you meet an open paren, push \texttt{'('} into $S$. If see an open brace push \texttt{'\{'} into $S$.
+\item If you meet a close paren, pop a symbol from $S$. If it's not an open paren (e.g. if it's an open brace), return false. Also, if $S$ is already empty, it means error; so return false.
+\item If you meet a close brace, pop a symbol from $S$. If it's not an open brace (e.g. if it's an open paren), return false. Also, if $S$ is already empty, it means error; so return false.
+\item If you reach the end of string, and $S$, it means that the string is well-formed; so return true. Otherwise, return false. 
+\end{enumerate}
+\caption{Matching Parentheses using stack}
+\label{a:mp3}
+\end{algorithm}
+
+(\textbf{code:} \texttt{code/Paren3.java})
+
+There, you now know all that's there to know about stacks!
+
+\end{document}

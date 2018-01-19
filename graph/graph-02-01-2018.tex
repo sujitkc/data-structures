@@ -1,0 +1,165 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning,shapes,arrows}
+\usetikzlibrary{calc,shapes.multipart,chains,automata,positioning,shapes,arrows,backgrounds,fit}
+\usetikzlibrary{matrix,backgrounds}
+
+\author{Sujit Chakrabarti}
+\title{Graphs}
+\date{}
+
+\begin{document}
+\definecolor{lightblue}{rgb}{0.8,0.93,1.0} % color values Red, Green, Blue
+\definecolor{Blue}{rgb}{0,0,1.0} % color values Red, Green, Blue
+\definecolor{Red}{rgb}{1,0,0} % color values Red, Green, Blue
+\definecolor{Purple}{rgb}{0.5,0,0.5}
+\definecolor{Pink}{rgb}{0.7,0,0.2}
+
+\newcommand{\highlight}[1]{{\color{Red}(#1)}}
+\newcommand{\comment}[1]{{\color{Blue}#1}}
+
+\lstset{
+	language = Java,
+	basicstyle = \ttfamily\scriptsize,
+	stringstyle = \ttfamily\scriptsize,
+	keywordstyle=\color{black}\scriptsize,
+	identifierstyle=\color{black}\scriptsize,
+	frameround=tttt,
+	numbers=none,
+	showstringspaces=false
+}
+
+\maketitle
+
+In several of the next videos we are going to learn about graphs, arguably the most important and versatile abstract data types.
+
+\section{Graphs in Real Life}
+We often like to represent the presence of a relation or the lack thereof between two entities in the following manner:
+\begin{figure}[H]
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i] (a)                  {$A$};
+    \node[i] (b)  [right = of a] {$B$};
+    \node[i] (c)  [below right = of a] {$C$};
+
+	\draw[-] (a) to (b);
+	\draw[-] (c) to (b);
+
+  \end{tikzpicture}
+}
+\end{center}
+\end{figure}
+
+The general common-sense interpretation of this picture is that $A$ is related to $B$, $B$ is related to $C$. But there seems to exist no relation between $A$ and $C$. In this Internet age, the best example we can quote of such a scenario is FaceBook, or LinkedIn. $A$, $B$ and $C$ represent the users, and the existence of a line between any two elements of this type indicates that they are `friends' of each other. There are $n$ number of cases where entities and relations between them are shown pictorially using something like the above, e.g. flight/train/bus routes (transportation engineers), electric circuits (electrical engineers), class diagrams, flowcharts (computer scientists), finite state machines \comment{add more examples} etc .
+
+All these pictures are examples of graphs. Graphs are mathematical objects with \emph{nodes} (representing things) and \emph{edges} (representing relations). Nodes are often called \emph{vertices}; edges are also called \emph{arcs}.
+
+\section{Taxonomy of Graphs}
+Graphs can be of various types depending on what they are being used to represent. For example, consider the `Friendship' graph in FaceBook. Here, two users are either friends of each other, or they are not. If $A$ is $B$'s friend, it implies that $B$ is $A$'s friend. That is, the \emph{friendship} relation is symmetric. Graphs used to represent such relations would typically be drawn with edges being line segments. Such graphs are called undirected graphs.
+
+On the other hand, consider a flowchart representing an algorithm. Here, an edge from $A$ (representing an instruction in the algorithm) to $B$ (representing another instruction) means that it is possible for control to flow directly from $A$ to $B$ in at least one of the executions of the algorithm. Here, an edge (called a control flow edge)from $A$ to $B$ defines some sort of successor relation, wherein $B$ is $A$'s successor. Edges in such graphs are typically arrow to indicate the directionality of the relation. These relations (like successor) are assymmetric. Therefore, an arrow flowing from $B$ to $A$ would mean exactly the opposite (i.e. $A$ is successor of $B$). Such graphs are called \emph{directed graphs} or \emph{digraphs}.
+
+There are graphs which are used to represent multiple types of relations between entities, some of them symmetric and some assymmetric. Take, for example, a graph that represents friendship between two Facebook users using an undirected edge, and 'follows' relation using an arrow or directed edge. Such graphs, with both directed and undirected edges are called \emph{mixed graphs}.
+
+Graphs may represent relations which are such that two entities may have only one relation, e.g. Facebook friendship. Such a graph will always have at the most one edge between two nodes. Also, a person can't be his own friend, i.e., there can't be an edge starting and ending on the same node. Such graphs are called \emph{simple} graphs. On the contrary, there are graphs which represent relations multiple instances of which may exist between two entities. Again take the example of a flowchart, in which multiple control flow edges may exist between the same pair of nodes. Similarly, there may be edges starting and ending on the same node. Such graphs are often called \emph{multigraphs}.
+
+For the purpose of this class, we will often be dealing with undirected simple graphs. When we wish to deal with other types of graphs, we will make it explicit.
+
+Two nodes are called neighbours if there exists an edge between them. Mathematically, predicate $neighbour(A,B)$ holds true if node $A$ and node $B$ are neighbours. A path is the sequence of nodes such that each pair of consecutive nodes in it are neighbours in the graph.
+ 
+\subsection*{Example}
+\begin{figure}[H]
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i] (n1)                  {$A$};
+    \node[i] (n2)  [right = of n1] {$B$};
+    \node[i] (n3)  [below = of n1] {$C$};
+    \node[i] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-] (n1) to (n2);
+	\draw[-] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+	\draw[-] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+\caption{An undirected graph}
+\label{f:ug}
+\end{figure}
+
+Fig.~\ref{f:ug} shows an undirected graph. Nodes are $A$, $B$, $C$, $D$ and $E$. $A$ and $B$ are neighbours as there's an edge between them. So are $B$ and $D$.
+$ABD$ is a path since $A$ and $B$ are neighbours and $B$ and $D$ are neighbours. In contrast, $ABC$ is not a path because $B$ and $C$ are not neighbours.
+
+\section{Graph ADT}
+
+\section{Traversals}
+\subsection{DFS}
+\subsubsection{Recursive DFS}
+\subsubsection{DFS using a Stack}
+\subsection{BFS}
+
+\subsection{Generic Traversals}
+
+\section{Implementations}
+\subsection{Edge List}
+\subsection{Adjacency Matrix}
+\subsection{Adjacency List}
+
+\section{Directed Graph}
+
+\section{Directed Acyclic Graphs}
+\subsection{Topological Sort}
+
+\section{Dijkstra}
+\end{document}

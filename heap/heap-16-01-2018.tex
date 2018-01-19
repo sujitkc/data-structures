@@ -1,0 +1,69 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning,shapes,arrows}
+\usetikzlibrary{calc,shapes.multipart,chains,automata,positioning,shapes,arrows,backgrounds,fit}
+\usetikzlibrary{matrix,backgrounds}
+
+\author{Sujit Chakrabarti}
+\title{Priority Queues and Heaps}
+\date{}
+
+\begin{document}
+\definecolor{lightblue}{rgb}{0.8,0.93,1.0} % color values Red, Green, Blue
+\definecolor{Blue}{rgb}{0,0,1.0} % color values Red, Green, Blue
+\definecolor{Red}{rgb}{1,0,0} % color values Red, Green, Blue
+\definecolor{Purple}{rgb}{0.5,0,0.5}
+\definecolor{Pink}{rgb}{0.7,0,0.2}
+
+\newcommand{\highlight}[1]{{\color{Red}(#1)}}
+\newcommand{\comment}[1]{{\color{Blue}#1}}
+
+\lstset{
+	language = Java,
+	basicstyle = \ttfamily\scriptsize,
+	stringstyle = \ttfamily\scriptsize,
+	keywordstyle=\color{black}\scriptsize,
+	identifierstyle=\color{black}\scriptsize,
+	frameround=tttt,
+	numbers=none,
+	showstringspaces=false
+}
+
+\maketitle
+
+\section{Real Life Example -- Selecting Privileged Bank Customers}
+
+\subsection{Java Code}
+(code: \texttt{pq1})
+
+We represent the accounts with integers denoting their balance amount.
+
+\section{Priority Queue ADT}
+
+\section{PQ using Lists}
+\subsection{Fast add, slow remove}
+(selection sort)
+\subsection{Slow add, fast remove}
+(insertion sort)
+
+\subsection{Effect of Mutable fields}
+The functional characteristics of the priority queue may vary from implementation to implementation if the fields being compared are mutable.
+
+\subsection{Generic PQs}
+\begin{enumerate}
+	\item Using \lstinline@java.lang.Comparable@ (code: \texttt{pq2})
+	\item Using \lstinline@java.util.Comparator@ (code: \texttt{pq3})
+\end{enumerate}
+\subsection{Performance Analysis}
+
+\section{Heap}
+\end{document}

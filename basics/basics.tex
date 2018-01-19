@@ -1,0 +1,259 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{framed}
+
+\author{Sujit Chakrabarti}
+\title{Introduction to Programming -- Basics}
+\date{}
+\begin{document}
+\definecolor{lightblue}{rgb}{0.8,0.93,1.0} % color values Red, Green, Blue
+\definecolor{Blue}{rgb}{0,0,1.0} % color values Red, Green, Blue
+\definecolor{Red}{rgb}{1,0,0} % color values Red, Green, Blue
+\definecolor{Purple}{rgb}{0.5,0,0.5}
+\definecolor{Pink}{rgb}{0.7,0,0.2}
+
+\newcommand{\highlight}[1]{{\color{Red}(#1)}}
+\newcommand{\comment}[1]{{\color{Blue}#1}}
+
+\lstset{
+	language = Java,
+	basicstyle = \ttfamily\small,
+	stringstyle = \ttfamily,
+	keywordstyle=\color{black},
+	identifierstyle=\color{black},
+	frameround=tttt,
+	numbers=none,
+	showstringspaces=false
+}
+
+\maketitle
+
+\section{Introduction}
+Software engineering is the art and science for developing industrial strength software systems. What are industrial strength systems? For one, they are not classroom software systems. They are systems which real people use to get their real work done. Software systems on which people entrust their money and business (e.g. banking systems, power systems), often life (e.g. healthcare devices like MR, cars and aeroplanes), nations entrust their security (military systems), and the world entrust its safety (e.g. nuclear reactors).
+
+Needless to say, the expectations from these software systems are sky-high. They shouldn't just be richly featured, these features must also come with certain promise of correctness and reliability. Such characteristics can be achieved only when software development is approached with certain degree of discipline and rigour.
+
+In this programme, you will learn a variety of aspects of that discipline and rigour. 
+
+In the next two modules, I will be introducing you to the basic vocabulary or tools with which you have to work at the ground level when building a software system. We start with the basic elements of a programming language -- features which you will find in all programming languages. Thereafter, we go to have a detailed discussion on a specific style of programming -- called object oriented programming -- which in today's world is pretty much the \emph{de facto} style of programming. We conclude this module by discussing briefly on this programming style can be harnessed in the design and construction of larger software systems.
+
+To keep our discussions grounded, we use Java as our programming language. That seems to be a good choice to us. For one, Java has been around for quite a while, and is still going quite strong. You pick any software system in use today, and the most likely language of implementation is Java. As the development ecosystem around Java is so widespread, there's been a lot of good code written in this language. Therefore, if you happen to take up a new development project -- whether it's GUI, web-based, Android, or embedded -- there's a lot already out implemented in Java there to build upon. In short, Java is a very strong candidate as a language of choice for your next project. 
+
+However, just as a clarification, let me mention that much of what we discuss using Java smoothly carries over to most other modern programming languages like C++, C\#, Python or PHP. 
+
+\section{Computation}
+Computation is, in simple terms, \emph{information processing}. Information is often hidden in data, and another alternative, and slightly restricted, term for computing is \emph{data processing}. As evident from the name, this has two elements to it: \emph{data} and \emph{processing}.
+
+
+As an example of data, let's consider the table shown in fig.~\ref{f:data}. There's a lot of information in this table. Each piece of information is an answer to some potential question. For example: you may want to know the number of students in this table. Of course, 5. Pretty easy, right? What's the highest/lowest mark? Now, you may have to look a bit more closely. What's the average mark? Hm! This will take a while to figure out. What's the name of the top scorer? Oops! That information isn't there in this data. In other words, a piece of data may possess any amount of information. Some of it could be apparent. Some not so apparent. What's not so apparent may have to be revealed using some calculation. You could go ahead and do that calculation using a calculator, a pen or a paper. Or you could instruct a computer to do it using computer programming.
+
+\begin{figure}[H]
+\begin{center}
+\begin{tabular}{| l | l |}
+\hline
+1 & 86.7    \\
+\hline
+2 & 81.5625 \\
+\hline
+3 & 85.85   \\
+\hline
+4 & 89.2625 \\
+\hline
+5 & 85.9625 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Student marks}
+\label{f:data}
+\end{figure}
+
+Learning to program is, to a large extent, all about learning methods of representing data in a computer, and learning methods of using a computer to processing them to give out answers to certain questions. Strictly speaking, computing is all about transforming data from one form to another so that certain information we are interested in gets revealed. However, in real life, a computer program has to be able to do a couple of more things to be useful, namely, inputing data (from the keyboard, sensors, network, hard-disc etc.) outputing it (to the monitor, LED, actuators, printer, network, hard disc etc.).
+
+As an example of a computer program, we can think of a program which takes the above data and gives us the answer to all the questions that we have asked above about it.
+
+A program being a bunch of instructions given to the computer, we must use a language to give those instructions, and that's what a programming language is: a language to give instructions to the computer. A programming language would therefore have the primitives to allow you do the following things:
+\begin{enumerate}
+	\item compute (i.e. process data)
+	\item input data
+	\item output data
+	\item store data
+\end{enumerate}
+
+So, let's start learning some of these primitives:
+
+\section{Output}
+First let's start with a learning how you can output something from your program into the standard output. Fig.~\ref{f:hw} shows the program that prints \texttt{"Hello world!"} on the standard output.
+
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+public class First {
+  public static void main(String[] arg) {
+    System.out.println("Hello world!");
+  }
+}
+\end{lstlisting}
+\caption{Java program to print \texttt{"Hello world!"} to the standard output}
+\label{f:hw}
+\end{figure}
+
+When we compile and execute this program, we get the output as expected:
+\begin{lstlisting}[frame=single]
+Hello world!
+\end{lstlisting}
+
+There's a lot happening the the above little code. We will gradually get acquainted to each aspect. However, for the moment, I would suggest you to focus on only the line which prints the \texttt{"Hello world!"} message. It says:
+    \lstinline@System.out.println("Hello world!");@
+
+The same instruction can be used to print various things, e.g. the value of a number. For example:
+    \lstinline@System.out.println(1234);@ will print \texttt{1234} -- instead of "Hello world!" -- on the standard output.
+
+\begin{framed}
+\section*{Theme for Learning Java}
+With the above first lesson in programming in Java, let us set up -- sort of -- a theme that we will follow in learning to program in this language. Broadly, computing is about data processing, as mentioned earlier. A programming language is a set of features which allow us to process the data in a powerful way, and allows us to represent the data in a way that they represent the information in the 'best' possible way. These are called \emph{data abstraction mechanisms}. It also allows us to manipulate them in the 'best' possible way. Let's call them \emph{control abstraction mechanisms}. 'Best' in quotes simply because, it depends on specific problem in question, and is by and large the central topic to which the entire discipline of computer science is devoted. 
+\end{framed}
+
+\section{Control Abstractions}
+Let's start with learning a few control abstraction mechanisms: mechanisms which let us compose bigger programs from atomic instructions. These mechanisms also allow us to decide which of the instructions in a program execute, and when. In other words, they let us decide how the control flows through the program we write.
+
+\subsection{Sequences of instructions}
+We could sequence as many print instructions as we wish, to have that many things printed in the same order. Like this:
+\begin{lstlisting}[frame=single]
+    System.out.println("Hello world!");
+    System.out.println(1234);
+\end{lstlisting}
+
+On running the above, we get the following output:
+\begin{lstlisting}[frame=single]
+Hello world!
+1234
+\end{lstlisting}
+
+Sequencing is the simplest of all control structures. It relies on the implicit semantics of a programming language which says that instructions would be executed in the same order as they appear in the program text. The program execution completes after the execution of the last instruction.
+
+Even though this may appear obvious to most of you, it's good to remember that the programming languages -- which are engineering artifacts themselves -- have been designed to behave this way.
+
+\subsection{Decision by if-else blocks}
+The programmer would achieve significantly higher power if he/she could decide -- based on certain conditions -- which of the instructions in his program executed. This can be done using the if-else construct.
+
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+public class IfElse {
+  public static void main(String[] arg) {
+    if(1 == 1) {
+      System.out.println("Hello world!");
+    }
+    else {
+      System.out.println("Hello class!");
+    }
+  }
+}\end{lstlisting}
+\caption{Java program to print \texttt{"Hello world!"} or \texttt{"Hello class!"} to the standard output based on the value of \lstinline@c@.}
+\label{f:hw}
+\end{figure}
+
+The above program prints \texttt{"Hello world!"}. However, the expression \lstinline@1 == 1@ is changed to \lstinline@1 == 2@, the output would be \texttt{"Hello class!"}. 
+
+\textbf{Explanation.} A program fragment \lstinline[mathescape]@if ($E$) $B_1$ else $B_2$@ means that if $E$ evaluates to true, then the block of instructions $B_1$ will be executed, otherwise the block $B_2$ will be executed. In the example we just saw, in the first case, the expression in place of $E$ was \lstinline@1 == 1@ which is of course true. Therefore, \lstinline@System.out.println("Hello world!");@, which is in the place of $B_1$, gets executed. In the second case, we change $E$ to \lstinline@1 == 2@, which is false, \\ 
+\lstinline@System.out.println("Hello class!");@, which stands for $B_2$ in the example, gets executed.
+
+\section{Data Abstraction}
+\subsection{Expressions}
+In the examples we have discussed so far, the only instructions to be executed are output instructions, which strictly don't even comprise of computation. The most primitive computational structures are expressions. Expressions are pieces of texts which the programming language can compute and assign a value as a result of that computation. We have already come across a number of expressions in the examples we have seen so far:
+\begin{enumerate}
+	\item \lstinline@1234@ is a numerical constant, and broadly falls in the category of arithmetic expressions (all expressions which evaluate to numbers).
+	\item \lstinline@"Hello world!"@ is a string constant.
+	\item \lstinline@1 == 1@ is a relational expression
+\end{enumerate}
+
+Calculation involves arithmetic expressions. Arithmetic expressions are composed by joining subexpressions -- which themselves are arithmetic expressions -- with arithmetic operators, e.g. + for addition, - for substraction, * for multiplication and / for division. Arithmetic expressions can be made arbitrarily large corresponding to full-fledged computations. We present an example here.
+
+Consider three friends -- Abhiraj, Leon and Vigyan -- go for a weekend outing. They decide upfront that they will split the expenses equally. Abhiraj buys the movie tickets online (Rs. 990). Leon pays the bus tickets (Rs. 140) and also purchases the popcorns in the interval (Rs. 150). Vigyan pays for the meal after the movie (Rs. 1100). Write a Python program to work out (and print) the due amount on each friend (note that the due could either be positive or negative).
+
+The amount due on any of the three friends is nothing but the average expenditure substracted by that friend's expenditure. For example, Abhiraj's due is Rs. $\frac{990 + 140 + 150 + 1100}{3} - 990$. This comes out to be approximately Rs. -196.67.  
+
+The program to calculate and print the dues of each of the above friends above is shown in fig.~\ref{f:due}
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+public class Due {
+  public static void main(String[] arg) {
+    System.out.println("Abhiraj's due = " +
+      ((990 + 140 + 150 + 1100)/3.0 - 990));
+    System.out.println("Leon's due = " +
+      ((990 + 140 + 150 + 1100)/3.0 - (140 + 150)));
+    System.out.println("Vigyan's due = " +
+      ((990 + 140 + 150 + 1100)/3.0 - 1100));
+
+    System.out.println("Verifying the sum of all dues = " + 
+      (((990 + 140 + 150 + 1100)/3.0 - 990) +
+      ((990 + 140 + 150 + 1100)/3.0 - (140 + 150)) +
+      ((990 + 140 + 150 + 1100)/3.0 - 1100)));
+  }
+}
+\end{lstlisting}
+\caption{Java program to print the due of each friend in the given example.}
+\label{f:due}
+\end{figure}
+
+An important observation is how Java allows us to use parenthesis -- or round brackets \texttt{'('} and \texttt{')'} -- to group sub-expressions for two reasons:
+\begin{enumerate}
+	\item One is to control the associativity of the operation.
+	\item Second is to increase readability
+\end{enumerate}
+
+\subsection{Variables}
+Even though the code in fig.~\ref{f:due} works perfectly, there are a number of issues with the code in fig.~\ref{f:due}.
+\begin{enumerate}
+	\item \textbf{Unreadable code.} Even with parentheses, arithmetic expressions in the given example of fig.~\ref{f:due} tend to be too long to be very readable. There's hardly anything in our code which contain hints or helps to read the expressions. For example, the sub-expression \texttt{(990 + 140 + 150 + 1100)}, which appears in all the instructions above, has a special significance. It's the total expenditure. Nothing in the code tells us that, and it's left to the reader to figure that out.
+	\item \textbf{Efficiency.} Similary, the same sub-expression -- \texttt{(990 + 140 + 150 + 1100)} -- gets computed in every separate instruction, even though it's clear that everytime it would result in the same value. This is wasteful computation. Could we compute this once, and re-use it again and again?
+	\item \textbf{Computation and output.} This is the first program we have written so far which has some non-trivial computation. But it's all embedded inside these print statements. Could we do something to separate out the computation from the result output part?
+\end{enumerate}
+
+The single answer to all the above questions lies in the idea of variables.
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+public class Due {
+  public static void main(String[] arg) {
+    double totalExpenditure   = 990.0 + 140.0 + 150.0 + 1100.0;
+    double average            = totalExpenditure / 3.0;
+    double abhirajExpenditure = 990.0;
+    double leonExpenditure    = 140.0 + 150.0;
+    double vigyanExpenditure  = 1100.0;
+    double abhirajDue         = average - abhirajExpenditure;
+    double leonDue            = average - leonExpenditure;
+    double vigyanDue          = average - vigyanExpenditure;
+    
+    System.out.println("Abhiraj's due = " + abhirajDue);
+    System.out.println("Leon's due = "    + leonDue);
+    System.out.println("Vigyan's due = "  + vigyanDue);
+
+    System.out.println("Verifying the sum of all dues = " + 
+      (abhirajDue + leonDue + vigyanDue));
+  }
+}
+\end{lstlisting}
+\caption{Java program to print the due of each friend in the given example using variables.}
+\label{f:due2}
+\end{figure}
+
+Take a look at the code in fig.~\ref{f:due2}. This is functionally identical to fig.~\ref{f:due}. However, it's a good lot more readable -- probably open to debate. But let's look at it as per the questions listed above. Here, we have given meaningful names to various sub-expressions. This makes it clearer as to what's going on in the program. Further, we compute \lstinline@totalExpenditure@ (standing for total expenditure) and \lstinline@average@ (standing for average expenditure per person) only once. And it gets used again three times where we were computing this value again and again in fig.~\ref{f:due}. We presume that this makes fig.~\ref{f:due2} a slight bit faster than fig.~\ref{f:due2}, though it mayn't be visible to the naked eyes. Finally, you can now mark out clearly the parts of the code which correspond to pure computation, and that which is outputing the result.
+
+The above has been possible due to variables. Variables are names representing memory storages where you can temporarily \emph{store} values generated out of expressions. These stored values can be \emph{used} at a later point in the program. What can be used as a variable in Java? Here's a list:
+\begin{itemize}
+	\item Single letters, e.g. \lstinline@x@, \lstinline@y@, \lstinline@z@ etc.
+	\item Strings of letters e.g. \lstinline@abc@, \lstinline@XyZ@ etc.
+	\item Strings of letters and digits starting with a letter e.g. \lstinline@abc1@, \lstinline@z23y@ etc.
+	\item Above kinds of strings with underscores (\lstinline@_@) at arbitrary positions: \lstinline@abc_1@, \lstinline@_abc1_@ etc.  
+\end{itemize}
+
+What can't be used in a variable name? Variable special characters e.g. \lstinline!@!, \lstinline@!@, etc are not allowed in variable names.
+
+There are three ways a variable can appear in a program: \emph{declaration}, \emph{definition} and \emph{use}.
+
+\end{document}

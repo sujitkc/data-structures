@@ -1,0 +1,196 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\author{Sujit Chakrabarti}
+\title{Introduction to Programming -- Functions}
+\date{}
+\begin{document}
+\definecolor{lightblue}{rgb}{0.8,0.93,1.0} % color values Red, Green, Blue
+\definecolor{Blue}{rgb}{0,0,1.0} % color values Red, Green, Blue
+\definecolor{Red}{rgb}{1,0,0} % color values Red, Green, Blue
+\definecolor{Purple}{rgb}{0.5,0,0.5}
+\definecolor{Pink}{rgb}{0.7,0,0.2}
+
+\newcommand{\highlight}[1]{{\color{Red}(#1)}}
+\newcommand{\comment}[1]{{\color{Blue}#1}}
+
+\lstset{
+	language = Java,
+	basicstyle = \ttfamily\small,
+	stringstyle = \ttfamily,
+	keywordstyle=\color{black},
+	identifierstyle=\color{black},
+	frameround=tttt,
+	numbers=none,
+	showstringspaces=false
+}
+
+\maketitle
+
+Loops enable us to perform repetitive computations without having to grow the code size in proportion to the number of times the task is to be done.
+
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+    for(int j = 0; j < 10; j++) {
+      System.out.println("Hello world!");
+    }
+\end{lstlisting}
+\caption{Loop to print "Hello world!" 10 times}
+\label{f:loop1}
+\end{figure}
+The loop shown in fig.~\ref{f:loop1} will print out \texttt{"Hello world!"} ten times. This is good. However, this also has its drawbacks. Suppose that you wish to print another message, say "Hello friend!" twenty times, in addition to the above. Using just loops, there's only one way to do it: write another loop as shown in fig.~\ref{f:loop2}.
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+    for(int j = 0; j < 10; j++) {
+      System.out.println("Hello world!");
+    }
+
+    for(int j = 0; j < 20; j++) {
+      System.out.println("Hello friend!");
+    }
+\end{lstlisting}
+\caption{Loop to print "Hello world!" 10 times}
+\label{f:loop2}
+\end{figure}
+
+We notice that the two loops above are very similar: they print \emph{a message}, and they do it \emph{certain number} of times. Barring the message and the number of times, the two actions are identical. We ask if Java gives us a way by which this identical-ness can be captured effectively, and can be used to our benefit. Turns out that \emph{functions} (or, more appropriately \emph{methods} in Java terminology) give us exactly what we are looking for.
+
+\section{Java Methods}
+Methods are reusable pieces of code which can be used as per needed anywhere and any number of times as required, of course, by not violating basic rules of Java language. When discussing methods, we talk of their creation (called \emph{method definition}), and their use (called \emph{method call} or \emph{method invocation}).
+
+\subsection{Method Definition}
+Fig.~\ref{f:meth1} shows a method definition to do what loops were doing in fig.~\ref{f:loop1} and fig.~\ref{f:loop2}.
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+  public static void printMessage(String m, int n) {
+     for(int j = 0; j < n; j++) {
+       System.out.println("Hello " + m + "!");
+     }
+  }
+\end{lstlisting}
+\caption{Method \lstinline@printMessage@ to print a message $n$ times}
+\label{f:meth1}
+\end{figure}
+
+\subsection{Invoking a Method}
+The method definition shown in fig.~\ref{f:meth1} can be used as follows from the \lstinline@main@ method:
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+  public static void main(String[] a) {
+    printMessage("world", 10);
+    printMessage("friend", 20);
+  }
+\end{lstlisting}
+\caption{Method \lstinline@printMessage@ called from \lstinline@main@ method twice.}
+\label{f:methcall1}
+\end{figure}
+
+This will give us an identical output as the code in fig.~\ref{f:loop2}. However, as you will notice, we have now avoided the need to write the loop twice to do two sets of message printing. We captured its common part by defining a method as in fig.~\ref{f:meth1}, and done both sets of printing by calling the method twice as shown in fig.~\ref{f:methcall1}.
+
+\subsection{Details}
+Let's look a bit more in details, the syntactic elements of a method. Components of a method definition:
+\begin{itemize}
+	\item \textbf{Name.} A method has name by which it can be referred. In the example, the name of the method is \lstinline@printMessage@.
+	\item \textbf{Body.} Body captures whatever the method is supposed to do. In the example, the following piece of code is its body:
+\begin{lstlisting}[frame=single]
+  {
+     for(int j = 0; j < n; j++) {
+       System.out.println("Hello " + m + "!");
+     }
+  }
+\end{lstlisting}
+	\item \textbf{Formal Parameters.} These are the input variables to the method. In the example, there are two parameters: \lstinline@m@ of type \lstinline@String@, and \lstinline@n@ of type \lstinline@int@.
+	\item \textbf{Return type.} This signifies the type of the value the function computes. In the given example, the return type is \lstinline@void@.
+	\item \textbf{Access specifier.} The keyword \lstinline@public@ in the method definition is called the access specifier. For the moment, we aren't in a position to tell exactly what it means. So, let's just say that all our methods are going to be \lstinline@public@. This is likely to change soon.
+	\item \textbf{Storage class specifier.} The keyword \lstinline@storage@ in the method definition is called the storage class specifier. For the moment, we aren't in a position to tell exactly what it means. So, let's just say that all our methods are going to be \lstinline@static@. This is going to change pretty soon.
+\end{itemize}
+
+Components of a method call:
+\begin{enumerate}
+	\item Name. The name of the method.
+	\item Actual parameters. The values which are being sent to the method as inputs from the calling site are called the actual parameter. In the given example, \lstinline@printMessage("world", 10)@ has two actual parameters: \lstinline@"world"@ and \lstinline@10@. \lstinline@printMessage("friend", 20)@'s actual parameters are \lstinline@"friend"@ and \lstinline@20@.
+\end{enumerate}
+Here's another example of a method definition.
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+  public static int add(int a, int b) {
+    int sum = a + b;
+    return sum;
+  }
+\end{lstlisting}
+\caption{Method \lstinline@add@ to add two numbers}
+\label{f:meth2}
+\end{figure}
+
+Fig.~\ref{f:meth2} defines a method \lstinline@add@ to add to two integers \lstinline@a@ and \lstinline@b@ supplied to it as parameters. The body of the method is:
+\begin{lstlisting}[frame=single]
+  {
+    int sum = a + b;
+    return sum;
+  }
+\end{lstlisting}
+Return type is \lstinline@int@. In this example, we see a new instruction \lstinline@return sum;@ which returns the value of \lstinline@sum@ to where the function was called from. A typical call to this function would look like:
+\begin{figure}[H]
+\begin{lstlisting}[frame=single]
+  public static void main(String[] a) {
+    int c = add(10, 20);
+    System.out.println(c);
+  }
+\end{lstlisting}
+\caption{Method invocation to \lstinline@add@ to add 10 and 20 and initialise the variable \lstinline@c@ with the value returned from it (i.e. 30).}
+\label{f:methcall2}
+\end{figure}
+The above function \lstinline@add@ does something trivial -- i.e. adding two integers -- for which it's not needed to write a function. However, in practice, function would often be implementation of non-trivial computations or algorithms, e.g. computing the factorial of $n$, the sum of all elements of an array, whether a given string is a palindrome or not, or even the shortest path between two nodes in a graph.
+
+For the compilation to succeed, the following semantic rules must be satisfied:
+\begin{enumerate}
+	\item The declared return type of a method and the type of value returned must agree. For example, let's change the method \lstinline@add@ in fig.~\ref{f:meth2} as follows:
+\begin{lstlisting}[frame=single]
+  public static int add(int a, int b) {
+    String sum = "Sum";
+    return sum;
+  }
+\end{lstlisting}
+The compiler will display the following error message:
+\begin{lstlisting}[frame=single]
+error: incompatible types
+    return sum;
+           ^
+  required: int
+  found:    String
+\end{lstlisting}
+As can be seen, the declared return type of the method is \lstinline@int@, but the type of the value being returned (\lstinline@sum@) is \lstinline@String@. This is not acceptable as per the language rules.
+\item The number of formal parameters in the method definition should match the number of actual parameters in the method call. If we change the method call in fig.~\ref{f:methcall2} to  \lstinline@int c = add(10);@, the compiler will give us the following error message:
+\begin{lstlisting}[frame=single]
+error: method add in class Function cannot be applied
+ to given types;
+    int c = add(10);
+            ^
+  required: int,int
+  found: int
+  reason: actual and formal argument lists differ in
+   length
+\end{lstlisting}
+\item The type of actual parameters in the function call should match the types of the corresponding formal parameters of the function definition.
+ If we change the method call in fig.~\ref{f:methcall2} to  \lstinline@int c = add(10, "20");@, the compiler will give us the following error message:
+\begin{lstlisting}[frame=single]
+error: method add in class Function cannot be applied
+ to given types;
+    int c = add(10, "20");
+            ^
+  required: int,int
+  found: int,String
+  reason: actual argument String cannot be converted
+   to int by method invocation conversion
+\end{lstlisting}
+
+\end{enumerate}
+It's a good idea to discuss the reasons behind the above typing rules being there in Java.
+\end{document}

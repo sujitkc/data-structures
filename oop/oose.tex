@@ -1,0 +1,90 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning,shapes,arrows}
+\usetikzlibrary{automata,positioning,shapes,arrows,backgrounds,fit}
+
+\author{Sujit Chakrabarti}
+\title{Object Oriented Software Engineering}
+\date{}
+\begin{document}
+\definecolor{lightblue}{rgb}{0.8,0.93,1.0} % color values Red, Green, Blue
+\definecolor{Blue}{rgb}{0,0,1.0} % color values Red, Green, Blue
+\definecolor{Red}{rgb}{1,0,0} % color values Red, Green, Blue
+\definecolor{Purple}{rgb}{0.5,0,0.5}
+\definecolor{Pink}{rgb}{0.7,0,0.2}
+
+\newcommand{\highlight}[1]{{\color{Red}(#1)}}
+\newcommand{\comment}[1]{{\color{Blue}#1}}
+
+\lstset{
+	language = Java,
+	basicstyle = \ttfamily\small,
+	stringstyle = \ttfamily,
+	keywordstyle=\color{black},
+	identifierstyle=\color{black},
+	frameround=tttt,
+	numbers=none,
+	showstringspaces=false
+}
+
+\maketitle
+In object oriented programming, we learned the language constructs that form the basic toolset of a software engineer using object oriented concepts to develop a software. We spoke little about how these constructs can be used to develop great software systems. 
+
+What are good software systems? The ISO 9126-1 software quality model identifies 6 main quality characteristics, namely:
+\begin{enumerate}
+	\item \textbf{Functionality.} The system should have capabilities or features that it promises. It should function properly and should have few or no bugs.
+	\item \textbf{Reliability.} The system should rarely fail.
+	\item \textbf{Usability.} A lay user should be able to interact with the system to get the specified job done.
+	\item \textbf{Efficiency.} The system should use all resources -- time, memory, network traffic, DB transactions, power etc. -- in an efficient way. We could probably consider humans involved in the development and use of a software software system as resources too. In that case, a system's maintenability, portability and usability also are related to efficiency.
+	\item \textbf{Maintainability.} The ease with which changes to the system can be made to add/enhance/remove features or remove bugs is called its maintenability.
+	\item \textbf{Portability.} The ease of making a system available to be used on a variety of computing platforms is called its portability.
+\end{enumerate}
+
+Object oriented concepts aren't a sure-fire prescription to high quality software. They need to be harnessed judiciously to achieve this. Object oriented concepts are powerful tools. And like all powerful tools, they could be used to create harmful results, i.e. bad quality software. Hence, it's important to understand the principles used by expert software designers to best harness OO principles in building great software systems.
+ 
+Here, we introduce the concept of object-oriented software engineering through two methods:
+\begin{enumerate}
+	\item Recurrent themes in software design and solutions which have been useful in solving them. These solutions are called \emph{design patterns}.
+	\item A complete case study of software design using object oriented concepts
+\end{enumerate}
+
+
+\section{Design Patterns}
+Let's go through a couple of examples of general software design problems: how they are described, how the solutions are proposed in a way that's applicable to all instances of that problem. Being recurrent and reusable, both the problems and their solutions are somewhat abstract. And it may require you to have the vocabulary of object oriented concepts ready on your fingertips. In particular: inheritance and polymorphism, containment, access specifiers, modules and such.
+
+\subsection{Composite}
+Let's return to our favourite example of shapes. Let's say that we wish to add another \lstinline@Shape@ class to the shape class family to represent shapes which contain other shapes as shown in fig.~\ref{f:cs}.
+
+%\tikz \draw (0, 0) circle(2cm);
+\begin{figure}
+\begin{center}
+\begin{tabular}{c @{\hspace{1cm}} c}
+\tikz \draw (0, 0) circle(1cm); & \tikz \draw (0, 0) rectangle(2cm, 1cm); \\
+\tikz \draw (0, 0) rectangle(2cm, 2cm); & 
+\begin{tikzpicture}
+  \draw (0, 0) rectangle(6cm, 5cm);
+  \draw (4, 2) circle(1cm);
+  \draw (3, 1) rectangle(1cm, 2cm);
+  \draw (1, 3) rectangle(3cm, 2cm);
+  \draw (1, 4) circle(0.5cm);
+
+\end{tikzpicture}
+\\
+
+\end{tabular}
+\end{center}
+
+\caption{\lstinline@Shape@ family: (a) \lstinline@Circle@; (b) \lstinline@Rectangle@; (c) \lstinline@Square@; (d) \lstinline@CompositeShape@}
+\label{f:cs}
+\end{figure}
+
+\end{document}

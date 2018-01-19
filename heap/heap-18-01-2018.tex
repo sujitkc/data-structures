@@ -1,0 +1,89 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning,shapes,arrows}
+\usetikzlibrary{calc,shapes.multipart,chains,automata,positioning,shapes,arrows,backgrounds,fit}
+\usetikzlibrary{matrix,backgrounds}
+
+\author{Sujit Chakrabarti}
+\title{Priority Queues and Heaps}
+\date{}
+
+\begin{document}
+\definecolor{lightblue}{rgb}{0.8,0.93,1.0} % color values Red, Green, Blue
+\definecolor{Blue}{rgb}{0,0,1.0} % color values Red, Green, Blue
+\definecolor{Red}{rgb}{1,0,0} % color values Red, Green, Blue
+\definecolor{Purple}{rgb}{0.5,0,0.5}
+\definecolor{Pink}{rgb}{0.7,0,0.2}
+
+\newcommand{\highlight}[1]{{\color{Red}(#1)}}
+\newcommand{\comment}[1]{{\color{Blue}#1}}
+
+\lstset{
+	language = Java,
+	basicstyle = \ttfamily\scriptsize,
+	stringstyle = \ttfamily\scriptsize,
+	keywordstyle=\color{black}\scriptsize,
+	identifierstyle=\color{black}\scriptsize,
+	frameround=tttt,
+	numbers=none,
+	showstringspaces=false
+}
+
+\maketitle
+
+\section{Real Life Example -- Selecting Privileged Bank Customers}
+
+In previous videos we have learned about FIFO queues and have observed that there are many examples in real-life where they occur: movie ticket queue, to-do lists etc.
+
+However, we know from our practical experience, we know that often these queues don't follow the FIFO order. For example, in a to-do list, a task introduced later in the list may have to be completed earlier based upon its urgency or importance. Similarly, if it's a checkin counter queue in an airport where there are passengers of a flight which is about to depart, these passengers may have to be allowed to jump the queue. In other words, the real life queues are often not FIFO queues but priority queues. In these queues, which element will the next one to be dequeued isn't necessarily decided based on the time at which it was enqueued, but on some other criteria as well.
+
+\subsection{Java Code}
+(code: \texttt{pq1}, \texttt{pq5})
+
+We represent the accounts with integers denoting their balance amount.
+
+\section{Priority Queue ADT}
+\begin{enumerate}
+	\item $removeMinimum$
+    \item $minimum$
+    \item $add$
+    \item $isEmpty$
+    \item $size$
+\end{enumerate}
+
+\section{PQ using Lists}
+\subsection{Fast add, slow remove}
+(selection sort)
+\begin{itemize}
+\item Add in the end ($O(1)$)
+\item Search and remove the minimum ($O(n)$)
+\end{itemize}
+\subsection{Slow add, fast remove}
+(insertion sort)
+\begin{itemize}
+\item Search and insert to maintain sorted order ($O(n)$). In array list, binary search will reduce the time to search to $O(log(n))$ but will increase the actual insertion step to $O(n)$ leading to the same performance. 
+\item Remove the minimum from the head ($O(1)$)
+\end{itemize}
+
+\subsection{Effect of Mutable fields}
+The functional characteristics of the priority queue may vary from implementation to implementation if the fields being compared are mutable.
+
+\subsection{Generic PQs}
+\begin{enumerate}
+	\item Using \lstinline@java.lang.Comparable@ (code: \texttt{pq2})
+	\item Using \lstinline@java.util.Comparator@ (code: \texttt{pq3})
+\end{enumerate}
+\subsection{Performance Analysis}
+
+\section{Heap}
+(code: \texttt{pq4})
+\end{document}

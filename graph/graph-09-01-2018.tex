@@ -1,0 +1,1025 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usetikzlibrary{positioning,shapes,arrows}
+\usetikzlibrary{calc,shapes.multipart,chains,automata,positioning,shapes,arrows,backgrounds,fit}
+\usetikzlibrary{matrix,backgrounds}
+
+\author{Sujit Chakrabarti}
+\title{Graphs}
+\date{}
+
+\begin{document}
+\definecolor{lightblue}{rgb}{0.8,0.93,1.0} % color values Red, Green, Blue
+\definecolor{Blue}{rgb}{0,0,1.0} % color values Red, Green, Blue
+\definecolor{Red}{rgb}{1,0,0} % color values Red, Green, Blue
+\definecolor{Purple}{rgb}{0.5,0,0.5}
+\definecolor{Pink}{rgb}{0.7,0,0.2}
+
+\newcommand{\highlight}[1]{{\color{Red}(#1)}}
+\newcommand{\comment}[1]{{\color{Blue}#1}}
+
+\lstset{
+	language = Java,
+	basicstyle = \ttfamily\scriptsize,
+	stringstyle = \ttfamily\scriptsize,
+	keywordstyle=\color{black}\scriptsize,
+	identifierstyle=\color{black}\scriptsize,
+	frameround=tttt,
+	numbers=none,
+	showstringspaces=false
+}
+
+\maketitle
+
+In several of the next videos we are going to learn about graphs, arguably the most important and versatile abstract data types.
+
+\section{Graphs in Real Life}
+We often like to represent the presence of a relation or the lack thereof between two entities in the following manner:
+\begin{figure}[H]
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i] (a)                  {$A$};
+    \node[i] (b)  [right = of a] {$B$};
+    \node[i] (c)  [below right = of a] {$C$};
+
+	\draw[-] (a) to (b);
+	\draw[-] (c) to (b);
+
+  \end{tikzpicture}
+}
+\end{center}
+\end{figure}
+
+The general common-sense interpretation of this picture is that $A$ is related to $B$, $B$ is related to $C$. But there seems to exist no relation between $A$ and $C$. In this Internet age, the best example we can quote of such a scenario is FaceBook, or LinkedIn. $A$, $B$ and $C$ represent the users, and the existence of a line between any two elements of this type indicates that they are `friends' of each other. There are $n$ number of cases where entities and relations between them are shown pictorially using something like the above, e.g. flight/train/bus routes (transportation engineers), electric circuits (electrical engineers), class diagrams, flowcharts (computer scientists), finite state machines \comment{add more examples} etc .
+
+All these pictures are examples of graphs. Graphs are mathematical objects with \emph{nodes} (representing things) and \emph{edges} (representing relations). Nodes are often called \emph{vertices}; edges are also called \emph{arcs}.
+
+\section{Taxonomy of Graphs}
+Graphs can be of various types depending on what they are being used to represent. For example, consider the `Friendship' graph in FaceBook. Here, two users are either friends of each other, or they are not. If $A$ is $B$'s friend, it implies that $B$ is $A$'s friend. That is, the \emph{friendship} relation is symmetric. Graphs used to represent such relations would typically be drawn with edges being line segments. Such graphs are called undirected graphs.
+
+On the other hand, consider a flowchart representing an algorithm. Here, an edge from $A$ (representing an instruction in the algorithm) to $B$ (representing another instruction) means that it is possible for control to flow directly from $A$ to $B$ in at least one of the executions of the algorithm. Here, an edge (called a control flow edge)from $A$ to $B$ defines some sort of successor relation, wherein $B$ is $A$'s successor. Edges in such graphs are typically arrow to indicate the directionality of the relation. These relations (like successor) are assymmetric. Therefore, an arrow flowing from $B$ to $A$ would mean exactly the opposite (i.e. $A$ is successor of $B$). Such graphs are called \emph{directed graphs} or \emph{digraphs}.
+
+There are graphs which are used to represent multiple types of relations between entities, some of them symmetric and some assymmetric. Take, for example, a graph that represents friendship between two Facebook users using an undirected edge, and 'follows' relation using an arrow or directed edge. Such graphs, with both directed and undirected edges are called \emph{mixed graphs}.
+
+Graphs may represent relations which are such that two entities may have only one relation, e.g. Facebook friendship. Such a graph will always have at the most one edge between two nodes. Also, a person can't be his own friend, i.e., there can't be an edge starting and ending on the same node. Such graphs are called \emph{simple} graphs. On the contrary, there are graphs which represent relations multiple instances of which may exist between two entities. Again take the example of a flowchart, in which multiple control flow edges may exist between the same pair of nodes. Similarly, there may be edges starting and ending on the same node. Such graphs are often called \emph{multigraphs}.
+
+For the purpose of this class, we will often be dealing with undirected simple graphs. When we wish to deal with other types of graphs, we will make it explicit.
+
+Two nodes are called neighbours if there exists an edge between them. Mathematically, predicate $neighbour(A,B)$ holds true if node $A$ and node $B$ are neighbours. A path is the sequence of nodes such that each pair of consecutive nodes in it are neighbours in the graph.
+ 
+\subsection*{Example}
+\begin{figure}[H]
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i] (n1)                  {$A$};
+    \node[i] (n2)  [right = of n1] {$B$};
+    \node[i] (n3)  [below = of n1] {$C$};
+    \node[i] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-] (n1) to (n2);
+	\draw[-] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+	\draw[-] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+\caption{An undirected graph}
+\label{f:ug}
+\end{figure}
+
+Fig.~\ref{f:ug} shows an undirected graph. Nodes are $A$, $B$, $C$, $D$ and $E$. $A$ and $B$ are neighbours as there's an edge between them. So are $B$ and $D$.
+$ABD$ is a path since $A$ and $B$ are neighbours and $B$ and $D$ are neighbours. In contrast, $ABC$ is not a path because $B$ and $C$ are not neighbours.
+
+
+\section{Graph ADT}
+
+\section{Traversals}
+Most algorithms which work with graphs involves visiting the nodes in certain order and doing `something'. For instance, you may want to print the graph, find the shortest path between two nodes, check whether one graph is same as the other etc. etc.
+
+Most -- if not all -- of these algorithms are built on top of or are variations of two prototypical traversal techniques: the depth first search and breadth first search. Studying DFS and BFS also gives us a very good way of understanding how the graph abstract data type can be used to implement algorithms.
+
+We now look at these two search/traversal techniques.
+
+\subsection{DFS}
+
+\subsubsection{Example}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i] (n3)  [below = of n1] {$C$};
+    \node[i] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-] (n1) to (n2);
+	\draw[-] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i] (n3)  [below = of n1] {$C$};
+    \node[i] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=red, very thick] (n1) to (n2);
+	\draw[-] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i, draw=red, very thick] (n3)  [below = of n1] {$C$};
+    \node[i] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=red, very thick] (n1) to (n2);
+	\draw[-, draw=red, very thick] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i] (n4)  [below = of n2] {$D$};
+    \node[i, draw=red, very thick] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=red, very thick] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, , draw=red, very thick, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i, draw=red, very thick] (n4)  [below = of n2] {$D$};
+    \node[i, draw=red, very thick] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=red, very thick] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, , draw=red, very thick, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-, draw=red, very thick] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i, draw=red, very thick] (n4)  [below = of n2] {$D$};
+    \node[i, draw=red, very thick] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=red, very thick] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, blue] (n1) to (n4);
+	\draw[-, , draw=red, very thick, bend right=60] (n1) to (n5);
+	\draw[-, blue] (n2) to (n4);
+	\draw[-, draw=red, very thick] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i, draw=blue] (n4)  [below = of n2] {$D$};
+    \node[i, draw=red, very thick] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=red, very thick] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, blue] (n1) to (n4);
+	\draw[-, , draw=red, very thick, bend right=60] (n1) to (n5);
+	\draw[-, blue] (n2) to (n4);
+	\draw[-, draw=blue] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i, draw=blue] (n4)  [below = of n2] {$D$};
+    \node[i, draw=blue] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=red, very thick] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, blue] (n1) to (n4);
+	\draw[-, , draw=blue, bend right=60] (n1) to (n5);
+	\draw[-, blue] (n2) to (n4);
+	\draw[-, draw=blue] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=blue] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i, draw=blue] (n4)  [below = of n2] {$D$};
+    \node[i, draw=blue] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, blue] (n1) to (n4);
+	\draw[-, , draw=blue, bend right=60] (n1) to (n5);
+	\draw[-, blue] (n2) to (n4);
+	\draw[-, draw=blue] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=blue] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i, draw=blue] (n4)  [below = of n2] {$D$};
+    \node[i, draw=blue] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, blue] (n1) to (n4);
+	\draw[-, , draw=blue, bend right=60] (n1) to (n5);
+	\draw[-, blue] (n2) to (n4);
+	\draw[-, draw=blue] (n4) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\subsubsection{Algorithm}
+\begin{algorithm}
+
+\begin{algorithmic}[0]
+\Procedure{$dfs$}{$node$}
+\ForAll{$n' \in neighbours(n)$}
+	\If{$n' \in visited$}
+		\State return
+	\Else
+		\State \Call{dfs}{$n'$}
+	\EndIf
+\EndFor
+\EndProcedure
+
+\end{algorithmic}
+\caption{Depth first search algorithm}
+\label{a:dfs}
+\end{algorithm}
+
+\subsubsection{Implementation}
+\textbf{Sets and Maps} \\
+We have learned about a few abstract data types like lists, stacks and queues, and currently we are learning about graphs. We have been mentioning that they are drawn from a fairly large collection of ADTs which represent various mathematical abstractions of collection types. By collection types, we mean data-types which can be used to store multiple objects, which may either be atomic or collections themselves. List is a collection, since it can store any number of elements. Same is the case with stacks. They differ in the way they put or don't put a restriction in the order of insertion and removal of those elements.
+
+Before we proceed to see the implementation of DFS as Java code, I would like to introduce to two more important ADTs. The main reason to introduce them is because they useful, and fundamental and you will get to use them in a variety of scenarios. Another reason is that we are going to use them in a limited way, in the implementations of all the data-structures and algorithms that we come across in this and future videos.
+
+The two ADTs are \emph{sets} and \emph{maps}.
+
+Sets are unordered collections of elements with no duplicates allowed. So, the kind of operations you might expect from sets would be: adding an element or removing it; checking if an element is there in the set; checking if it's empty or not etc. Further, we can iterate upon a set, i.e. I can run a for-loop on a set where I do some computation with each of its element. What's not allowed is to access elements by their index: viz. for a set s and integer i, s.get(i) mayn't be defined. Where can I use sets? Well, you will see them being used in many of the programs that you will see shortly. But, in general, a good way of judge where they can be used is: look for lists where you are not interested in the ordering, or positioning of the elements, and you wish to prevent multiple instances of the same element from getting into the collection. And that's how we are going to use sets in our programs. Of course, if you wish set ADT to represent the mathematical notion of sets in a more complete way, you might want to define additional operations on them like union, intersection, complimentation and set minus. But as of now, we aren't concerned with those capabilities of sets.
+
+You could use lists to represent sets. In that case you might have to ensure that certain restrictions, e.g. the non-duplication of elements is maintained. You could also use lists to implement a class to represent sets. And I would encourage you to do so as an exercise.
+
+Maps, at least in the world of programming, provide a connection from members of a source set of elements to those of a target set of elements. The source set is often called the domain, and the target set the range. The domain is called the key set and the values in it are called keys. The range is called the value set, and the values in it are called values. So, a map can be used, for example, to represent a price-list, where commodities are mapped to their prices, a word-dictionary where a word is mapped to its meaning. You could use it to map authors to the set of books they have authored, and so on. What kind of operations would you expect maps to have? The most common operation is to be able to get a value in the range set by the argument in the domain. So, \lstinline|price_list.get(potato)| will give you the running rates of potatos. \lstinline@authors.get(tolstoy)@ would give you a set of books Tolstoy has written, namely \{"Anna Karenina", "War and Peace" \}. The other operation is to add/update a mapping. So, \lstinline@price_list.put(onion, 35)@ will create a new entry for onion with price 35 in case it was not there. Otherwise, it will update the existing mapping. In any case, the result will be that hereafter \lstinline@price_list.get(onion)@ will fetch you 35.
+
+Just as an interesting addition, you might look at lists as restricted maps, where the values in the domain are always non-negative integers. And that should give you a hint as to where you could use a map. Look for cases where you feel like using a list which is indexed by things other than non-negative integers. That's a good place to use maps.
+
+Maps can be represented using lists of key-value pairs. The first element of each of these pairs would be an element of the domain, and the second element would be the value it maps to. You could also implement a map ADT built upon lists. And again, I encourage you to do so as an exercise.
+
+In our programming demonstration, you will see sets and maps being used at many places. We will go ahead use Java standart library classes for these ADTs. The reason why we don't implement our own sets and maps here is partly because we don't want to spend our video time in discussing their internal details while we wish to discuss something else. Another reason is that these library implementations are optimised and would provide much better performance as compared to any list based implementation that we may create.
+
+\subsubsection{Demo Examples}
+\begin{enumerate}
+\item Pre-order DFS numbering (\texttt{DFS1.java})
+\item Set of reachable nodes from a given node (\texttt{DFS2.java})
+\end{enumerate}
+
+\subsubsection{Programming Problems}
+Use DFS to:
+\begin{enumerate}
+\item Find if a graph is connected (i.e. there exists a path between all pairs of nodes).
+\item Find if a graph has a cycle (i.e. there exists a node which has a path to itself).
+\end{enumerate}
+
+
+\subsection{BFS}
+
+\subsubsection{Example}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i] (n1)                  {$A$};
+    \node[i, draw=red, very thick] (n2)  [right = of n1] {$B$};
+    \node[i] (n3)  [below = of n1] {$C$};
+    \node[i] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-] (n1) to (n2);
+	\draw[-] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i] (n3)  [below = of n1] {$C$};
+    \node[i] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i] (n3)  [below = of n1] {$C$};
+    \node[i, draw=red, very thick] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-, draw=blue] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=red, very thick] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i] (n3)  [below = of n1] {$C$};
+    \node[i, draw=red, very thick] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-, draw=blue] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=blue] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i, draw=red, very thick] (n3)  [below = of n1] {$C$};
+    \node[i, draw=red, very thick] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-, draw=blue] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=blue] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i, draw=red, very thick] (n3)  [below = of n1] {$C$};
+    \node[i, draw=red, very thick] (n4)  [below = of n2] {$D$};
+    \node[i] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, draw=blue] (n1) to (n4);
+	\draw[-, bend right=60] (n1) to (n5);
+	\draw[-, draw=blue] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=blue] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i, draw=red, very thick] (n3)  [below = of n1] {$C$};
+    \node[i, draw=, draw=red, very thick] (n4)  [below = of n2] {$D$};
+    \node[i, draw=red, very thick] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, draw=blue] (n1) to (n4);
+	\draw[-, draw=blue, bend right=60] (n1) to (n5);
+	\draw[-, draw=blue] (n2) to (n4);
+	\draw[-] (n4) to (n5);
+	\draw[-] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=blue] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i, draw=red, very thick] (n3)  [below = of n1] {$C$};
+    \node[i, draw=blue] (n4)  [below = of n2] {$D$};
+    \node[i, draw=red, very thick] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, draw=blue] (n1) to (n4);
+	\draw[-, draw=blue, bend right=60] (n1) to (n5);
+	\draw[-, draw=blue] (n2) to (n4);
+	\draw[-, draw=blue] (n4) to (n5);
+	\draw[-, draw=blue] (n3) to (n4);
+	\draw[-] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=blue] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i, draw=blue] (n4)  [below = of n2] {$D$};
+    \node[i, draw=red, very thick] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, draw=blue] (n1) to (n4);
+	\draw[-, draw=blue, bend right=60] (n1) to (n5);
+	\draw[-, draw=blue] (n2) to (n4);
+	\draw[-, draw=blue] (n4) to (n5);
+	\draw[-, draw=blue] (n3) to (n4);
+	\draw[-, draw=blue] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+
+\begin{center}
+\resizebox{0.35\textwidth}{!}{%
+\begin{tikzpicture}[auto,
+    ->,
+  %  shorten >=2pt,
+    >=stealth,
+  %  node distance=1cm,
+    i/.style={%
+      rectangle, draw=black, thick, fill=lightblue, drop shadow,
+      text ragged, minimum height=2em, minimum width=2em, inner sep=6pt
+    },
+    m/.style={%
+      circle, draw=black, thick, fill=pink, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    },
+    a/.style={%
+      rectangle, draw=black, thick, fill=brown, drop shadow,
+      text ragged, minimum height=2em, inner sep=6pt
+    }
+  ]
+    \node[i, draw=blue] (n1)                  {$A$};
+    \node[i, draw=blue] (n2)  [right = of n1] {$B$};
+    \node[i, draw=blue] (n3)  [below = of n1] {$C$};
+    \node[i, draw=blue] (n4)  [below = of n2] {$D$};
+    \node[i, draw=blue] (n5)  [below right = of n3, xshift=-1cm, yshift=0.5cm] {$E$};
+
+	\draw[-, draw=blue] (n1) to (n2);
+	\draw[-, draw=blue] (n1) to (n3);
+	\draw[-, draw=blue] (n1) to (n4);
+	\draw[-, draw=blue, bend right=60] (n1) to (n5);
+	\draw[-, draw=blue] (n2) to (n4);
+	\draw[-, draw=blue] (n4) to (n5);
+	\draw[-, draw=blue] (n3) to (n4);
+	\draw[-, draw=blue] (n3) to (n5);
+
+  \end{tikzpicture}
+}
+\end{center}
+
+\subsubsection{Algorithm}
+\begin{algorithm}
+
+\begin{algorithmic}[0]
+\Procedure{$bfs$}{$node$}
+	\State $queue \gets$ \textbf{new} Queue
+	\State $visited \gets \{\}$
+	\State \Call{enqueue}{$Q$, $node$}
+	\State add $n$ to $visited$ set
+	\While{$Q$ is not empty}
+		\State $n \gets$ \Call{dequeue}{$Q$}
+		\ForAll{$n' \in neighbours(n)$}
+			\If{$n' \not\in visited$}
+				\State \Call{enqueue}{$Q$, $n'$}
+			\Else
+			\EndIf
+		\EndFor
+	\EndWhile
+\EndProcedure
+
+\end{algorithmic}
+\caption{Breadth first search algorithm}
+\label{a:bfs}
+\end{algorithm}
+
+\section{Implementations}
+\subsection{Edge List}
+\subsection{Adjacency Matrix}
+\subsection{Adjacency List}
+
+\subsection{Comparison}
+
+\section{Directed Graph}
+
+\subsection{Dijkstra}
+
+\section{Directed Acyclic Graphs}
+\subsection{Topological Sort}
+
+
+\end{document}
