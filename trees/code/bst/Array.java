@@ -7,7 +7,7 @@ class Array {
   public final int numberOfColumns;
   public final int numberOfRows;
 
-  public Array(Node node) {
+  public Array(BSTNode node) {
     Array left = null;
     Array right = null;
     if(node.getLeft() != null) {

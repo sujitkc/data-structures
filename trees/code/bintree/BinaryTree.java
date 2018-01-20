@@ -28,41 +28,54 @@ public class BinaryTree<T> {
     if(left != null && right != null) {
       throw new Exception("Can't delete node " + node + " as it has both children.");
     }
-    else if(left == null && right == null) {
-      Node<T> parent = node.getParent();
-      Node<T> l = parent.getLeft();
-      Node<T> r = parent.getRight();
-
-      if(node == l) {
-        parent.setLeft(null);
+    if(this.root != node) {
+      if(left == null && right == null) {
+        Node<T> parent = node.getParent();
+        Node<T> l = parent.getLeft();
+        Node<T> r = parent.getRight();
+  
+        if(node == l) {
+          parent.setLeft(null);
+        }
+        else {
+          parent.setRight(null);
+        }
       }
-      else {
-        parent.setRight(null);
+      else if(left != null) {
+        Node<T> parent = node.getParent();
+        Node<T> l = parent.getLeft();
+        Node<T> r = parent.getRight();
+
+        if(node == l) {
+          parent.setLeft(left);
+        }
+        else {
+          parent.setRight(left);
+        }   
+      }
+      else { // right != null
+        Node<T> parent = node.getParent();
+        Node<T> l = parent.getLeft();
+        Node<T> r = parent.getRight();
+  
+        if(node == l) {
+          parent.setLeft(right);
+        }
+        else {
+          parent.setRight(right);
+        }   
       }
     }
-    else if(left != null) {
-      Node<T> parent = node.getParent();
-      Node<T> l = parent.getLeft();
-      Node<T> r = parent.getRight();
-
-      if(node == l) {
-        parent.setLeft(left);
+    else {// if(this.root == node)
+      if(left == null && right == null) {
+        this.root = null;
       }
-      else {
-        parent.setRight(left);
-      }   
-    }
-    else { // right != null
-      Node<T> parent = node.getParent();
-      Node<T> l = parent.getLeft();
-      Node<T> r = parent.getRight();
-
-      if(node == l) {
-        parent.setLeft(right);
+      else if(left != null) {
+        this.root = left;   
       }
-      else {
-        parent.setRight(right);
-      }   
+      else { // right != null
+        this.root = right;   
+      }
     }
   }
 
