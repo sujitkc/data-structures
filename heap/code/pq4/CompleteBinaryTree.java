@@ -42,7 +42,7 @@ public class CompleteBinaryTree<T> {
 
   public Entry<T> getLeftChild(Entry<T> entry) {
     int pos = 2 * entry.getIndex();
-    if(pos >= this.size() - 1) {
+    if(pos >= this.size()) {
       return null;
     }
     return this.array.get(pos);
@@ -50,7 +50,7 @@ public class CompleteBinaryTree<T> {
 
   public Entry<T> getRightChild(Entry<T> entry) {
     int pos = 2 * entry.getIndex() + 1;
-    if(pos >= this.size() - 1) {
+    if(pos >= this.size()) {
       return null;
     }
     return this.array.get(pos);
@@ -100,5 +100,9 @@ class Entry<T> {
 
   public void setIndex(int index) {
     this.index = index;
+  }
+
+  public String toString() {
+    return "Entry(key = " + this.key + ", index = " + this.index + ")";
   }
 }

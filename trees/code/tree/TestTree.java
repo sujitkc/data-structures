@@ -1,12 +1,11 @@
-import junit.framework.*;
 import java.util.Comparator;
 
-public class TestTree extends TestCase {
-  private Tree<Integer> tree;
+public class TestTree {
+  private static Tree<Integer> tree;
  
-  public void setUp(){
+  public static void setUp(){
     System.out.println("\nsetup");
-    this.tree = new Tree<Integer>(
+    tree = new Tree<Integer>(
       17,
       new Comparator<Integer>() {
         public int compare(Integer i1, Integer i2) {
@@ -14,19 +13,30 @@ public class TestTree extends TestCase {
         }
       }
     );
+
   }
 
-  public void test_getRoot(){
+  public static void main(String[] arg) {
+    test_getRoot();
+    test_getNumberOfNodes();
+    test_find();
+    test_deleteNode();
+  }
+
+  public static void test_getRoot(){
+    setUp();
     System.out.println("test_getRoot");
     System.out.println("root = " + tree.getRoot());
   }
 
-  public void test_getNumberOfNodes(){
+  public static void test_getNumberOfNodes(){
+    setUp();
     System.out.println("test_getNumberOfNodes");
     System.out.println("size = " + tree.getNumberOfNodes());
   }
 
-  public void test_find(){
+  public static void test_find(){
+    setUp();
     System.out.println("test_find");
     try {
       System.out.println("find(17) = " + tree.find(17));
@@ -42,7 +52,8 @@ public class TestTree extends TestCase {
     }
   }
 
-  public void test_addChild(){
+  public static void test_addChild(){
+    setUp();
     System.out.println("test_addChild");
     try {
       TreeNode<Integer> root = tree.getRoot();
@@ -56,7 +67,8 @@ public class TestTree extends TestCase {
     }
   }
 
-  public void test_deleteNode(){
+  public static void test_deleteNode(){
+    setUp();
     System.out.println("test_deleteNode");
     try {
       TreeNode<Integer> root = tree.getRoot();

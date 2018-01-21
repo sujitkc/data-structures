@@ -11,7 +11,7 @@ public class Sort {
     list.add(4);
     list.add(2);
 
-    MyPriorityQueue pq = new ListPQ2();
+    MyPriorityQueue pq = new ListPQ1();
 
     while(list.isEmpty() == false) {
       pq.add(list.remove(0));

@@ -1,21 +1,13 @@
-import junit.framework.*;
 import java.util.Comparator;
 
-public class TestTraversal extends TestCase {
-  private Tree<Integer> tree = new Tree<Integer>(
-    17,
-    new Comparator<Integer>() {
-      public int compare(Integer i1, Integer i2) {
-        return i1.compareTo(i2);
-      }
-    }
-  );
+public class TestTraversal {
+  private static Tree<Integer> tree;
 
-  private Traversal<Integer> traversal = new Traversal<Integer>(tree);
+  private static Traversal<Integer> traversal;
   
-  public void setUp(){
+  public static void setUp(){
     System.out.println("\nsetup");
-    this.tree = new Tree<Integer>(
+    tree = new Tree<Integer>(
       17,
       new Comparator<Integer>() {
         public int compare(Integer i1, Integer i2) {
@@ -23,7 +15,7 @@ public class TestTraversal extends TestCase {
         }
       }
     );
-    this.traversal = new Traversal<Integer>(tree);
+    traversal = new Traversal<Integer>(tree);
 
      try {
       TreeNode<Integer> root = tree.getRoot();
@@ -39,23 +31,34 @@ public class TestTraversal extends TestCase {
       TreeNode<Integer> n10  = tree.addChild(n5, 27);
       TreeNode<Integer> n11  = tree.addChild(n10, 25);
       TreeNode<Integer> n12  = tree.addChild(n11, 26);
+
+      traversal = new Traversal<Integer>(tree);
     }
     catch(Exception e) {
       System.out.println(e.getMessage());
     }
   }
 
-  public void test_postorder(){
+  public static void main(String[] args) {
+    test_postorder();
+    test_preorder();
+    test_inorder();
+  }
+
+  public static void test_postorder(){
+    setUp();
     System.out.println("testing postorder ...");
     traversal.postorder();      
   }
 
-  public void test_preorder(){
+  public static void test_preorder(){
+    setUp();
     System.out.println("testing preorder ...");
     traversal.preorder();      
   }
 
-  public void test_inorder(){
+  public static void test_inorder(){
+    setUp();
     System.out.println("testing inorder ...");
     traversal.inorder();      
   }

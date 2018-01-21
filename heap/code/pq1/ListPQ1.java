@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class ListPQ1 {
+public class ListPQ1 extends ListPQ {
   public void add(Integer element) {
     this.list.add(element);
   }
@@ -15,9 +15,9 @@ public class ListPQ1 {
 
   private int minIndex() {
     int minIndex = 0;
-    T min = this.list.get(0);
+    Integer min = this.list.get(0);
     for(int i = 0; i < this.list.size(); i++) {
-      T e = this.list.get(i);
+     Integer e = this.list.get(i);
       if(e < min) {
         min = e;
         minIndex = i;

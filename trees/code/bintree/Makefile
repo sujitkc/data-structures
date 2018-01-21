@@ -1,9 +1,13 @@
 JUNIT=/usr/share/java/junit4.jar
 
 bt :
-	javac -cp .:$(JUNIT) TestBinaryTree.java
-	java -cp .:$(JUNIT) org.junit.runner.JUnitCore TestBinaryTree
+	javac TestBinaryTree.java
+	java TestBinaryTree
 
 traversal :
-	javac -cp .:$(JUNIT) TestTraversal.java
-	java -cp .:$(JUNIT) org.junit.runner.JUnitCore TestTraversal
+	javac TestTraversal.java
+	java TestTraversal
+
+tree :
+	javac TestTree.java
+	java TestTree

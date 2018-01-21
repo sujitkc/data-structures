@@ -1,28 +1,40 @@
-import junit.framework.*;
 import java.util.Comparator;
 
-public class TestBinaryTree extends TestCase {
-  private BinaryTree<Integer> tree = new BinaryTree<Integer>(
-    17,
-    new Comparator<Integer>() {
-      public int compare(Integer i1, Integer i2) {
-        return i1.compareTo(i2);
-      }
-    }
-  );
+public class TestBinaryTree {
+  private static BinaryTree<Integer> tree;
   
-  protected void setUp(){
+  protected static void setUp(){
+    tree = new BinaryTree<Integer>(
+      17,
+      new Comparator<Integer>() {
+        public int compare(Integer i1, Integer i2) {
+          return i1.compareTo(i2);
+        }
+      }
+    );
+
   }
 
-  public void test_getRoot(){
+  public static void main(String[] arg) {
+    test_getRoot();
+    test_getNumberOfNodes();
+    test_find();
+    test_setRight_Left();
+    test_deleteNode();
+  }
+
+  public static void test_getRoot(){
+    setUp();
     System.out.println("root = " + tree.getRoot());
   }
 
-  public void test_getNumberOfNodes(){
+  public static void test_getNumberOfNodes(){
+    setUp();
     System.out.println("size = " + tree.getNumberOfNodes());
   }
 
-  public void test_find(){
+  public static void test_find(){
+    setUp();
     try {
       System.out.println("find(17) = " + tree.find(17));
       System.out.println("find(9) = " + tree.find(9));
@@ -37,7 +49,8 @@ public class TestBinaryTree extends TestCase {
     }
   }
 
-  public void test_setRight_Left(){
+  public static void test_setRight_Left(){
+    setUp();
     try {
       Node<Integer> root = tree.getRoot();
       System.out.println(tree.setRight(root, 9));
@@ -50,7 +63,8 @@ public class TestBinaryTree extends TestCase {
     }
   }
 
-  public void test_deleteNode(){
+  public static void test_deleteNode(){
+    setUp();
     try {
       Node<Integer> root = tree.getRoot();
       Node<Integer> n1 = tree.setLeft(root, 13);
@@ -78,5 +92,4 @@ public class TestBinaryTree extends TestCase {
       System.out.println(e.getMessage());
     }
   }
-
 }
