@@ -117,18 +117,8 @@ public class BST<T extends Comparable> {
       }
       else { // both left and right child exist.
         BSTNode<T> minmax = this.largest(left);
-        minmax.setRight(right);
-        if(minmax != left) {
-          minmax.getParent().setRight(null);
-          minmax.setLeft(left);
-        }
-        if(node == l) {
-          parent.setLeft(minmax);
-        }
-        else {
-          parent.setRight(minmax);
-        }
-        minmax.setParent(parent);
+        node.setValue(minmax.getValue());
+        this.deleteNode(minmax);
       }
     }
     else {// if(this.root == node)
@@ -145,13 +135,8 @@ public class BST<T extends Comparable> {
       }
       else { // (both left and right child exist.
         BSTNode<T> minmax = this.largest(left);
-        minmax.setRight(right);
-        if(minmax != left) {
-          minmax.getParent().setRight(null);
-          minmax.setLeft(left);
-        }
-        this.root = minmax;
-        minmax.setParent(null);
+        node.setValue(minmax.getValue());
+        this.deleteNode(minmax);
       }
     }
   }
@@ -228,6 +213,10 @@ class BSTNode<T extends Comparable> {
 
   public String toString() {
     return this.value.toString();
+  }
+
+  public void setValue(T value) {
+    this.value = value;
   }
 
   public void setParent(BSTNode<T> node) {

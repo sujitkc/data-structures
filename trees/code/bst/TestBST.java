@@ -12,6 +12,7 @@ public class TestBST {
     t6();
     t7();
     t8();
+    t9();
   }
 
   public static void t1() {
@@ -284,6 +285,45 @@ public class TestBST {
       System.out.println(e.getMessage());
     }
   }
+
+  // delete the root node.
+  public static void t9() {
+    BST<Integer> tree = new BST<Integer>(130,
+      new Comparator<Comparable>() {
+        public int compare(Comparable i1,Comparable i2) {
+          return i1.compareTo(i2);
+        }
+      }
+    );
+
+    try {
+      BSTNode<Integer> n1  = tree.addNode(30);
+      BSTNode<Integer> n2  = tree.addNode(40);
+      BSTNode<Integer> n3  = tree.addNode(120);
+      BSTNode<Integer> n4  = tree.addNode(140);
+      BSTNode<Integer> n5  = tree.addNode(150);
+      BSTNode<Integer> n6  = tree.addNode(50);
+      BSTNode<Integer> n7  = tree.addNode(10);
+      BSTNode<Integer> n8  = tree.addNode(80);
+      BSTNode<Integer> n9  = tree.addNode(20);
+      BSTNode<Integer> n10 = tree.addNode(70);
+      BSTNode<Integer> n11 = tree.addNode(90);
+      BSTNode<Integer> n12 = tree.addNode(110);
+      BSTNode<Integer> n13 = tree.addNode(60);
+      BSTNode<Integer> n14 = tree.addNode(180);
+      BSTNode<Integer> n15 = tree.addNode(135);
+
+      System.out.println(TestBST.toArray(tree));
+      BSTNode<Integer> root = tree.getRoot();
+      System.out.println("removing node " + root + " ...");
+      tree.deleteNode(root);
+      System.out.println(TestBST.toArray(tree));
+    }
+    catch(Exception e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
 
 
 
