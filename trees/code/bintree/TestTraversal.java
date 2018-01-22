@@ -40,6 +40,7 @@ public class TestTraversal {
     test_postorder();
     test_preorder();
     test_inorder();
+    test_bfs();
   }
 
   public static void test_postorder(){
@@ -59,4 +60,11 @@ public class TestTraversal {
     System.out.println("testing inorder ...");
     traversal.inorder();      
   }
+
+  public static void test_bfs(){
+    setUp();
+    System.out.println("testing bfs ...");
+    traversal.bfs();      
+  }
+
 }

@@ -1,3 +1,6 @@
+import java.util.Queue;
+import java.util.LinkedList;
+
 public class Traversal<T> {
 
   private BinaryTree<T> tree;
@@ -53,6 +56,23 @@ public class Traversal<T> {
     System.out.println(node);
     if(right != null) {
       this.inorder(right);
+    }
+  }
+
+  public void bfs() {
+    Queue<Node<T>> queue = new LinkedList<Node<T>>();
+    queue.add(this.tree.getRoot());
+    while(queue.isEmpty() == false) {
+      Node<T> nextNode = queue.remove();
+      System.out.println(nextNode);
+      Node<T> left = nextNode.getLeft();
+      Node<T> right = nextNode.getRight();
+      if(left != null) {
+        queue.add(left);
+      }
+      if(right != null) {
+        queue.add(right);
+      }
     }
   }
 }
