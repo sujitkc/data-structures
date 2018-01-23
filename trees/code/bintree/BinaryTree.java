@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 public class BinaryTree<T> {
   protected Node<T> root;
-  private Comparator<T> comparator;
+  protected Comparator<T> comparator;
 
   public BinaryTree(T value, Comparator<T> comparator) {
     this.root = new Node<T>(value, null, null, null);
@@ -16,11 +16,61 @@ public class BinaryTree<T> {
   }
 
   public int getNumberOfNodes() {
-    return this.getNumberOfNodes(root);
+    return this.getNumberOfNodes(this.root);
   }
 
   public Node<T> find(T value) {
     return this.find(root, value);
+  }
+
+  private int getNumberOfNodes(Node<T> node) {
+    int numberOfNodes = 1;
+
+    if(node.getLeft() != null) {
+      numberOfNodes += this.getNumberOfNodes(node.getLeft());
+    }
+    if(node.getRight() != null) {
+      numberOfNodes += this.getNumberOfNodes(node.getRight());
+    }
+    return numberOfNodes;
+  }
+
+  private Node<T> find(Node<T> node, T value) {
+    int compare = this.comparator.compare(value, node.getValue());
+    if(compare == 0)  {
+      return node;
+    }
+    if(node.getLeft() != null) {
+      Node<T> found = this.find(node.getLeft(), value);
+      if(found != null) {
+        return found;
+      }
+    }
+    if(node.getRight() != null) {
+      Node<T> found = this.find(node.getRight(), value);
+      if(found != null) {
+        return found;
+      }
+    }
+    return null;
+  }
+
+  public Node<T> setRight(Node<T> node, T value) throws Exception {
+    if(node.getRight() != null) {
+      throw new Exception("setRight failed because node " + node + " already has a right child.");
+    }
+    Node<T> child = new Node<T>(value, node, null, null);
+    node.setRight(child);
+    return child;
+  }
+
+  public Node<T> setLeft(Node<T> node, T value) throws Exception {
+     if(node.getLeft() != null) {
+      throw new Exception("setLeft failed because node " + node + " already has a Left child.");
+    }
+    Node<T> child = new Node<T>(value, node, null, null);
+    node.setLeft(child);
+    return child;
   }
 
   public void deleteNode(Node<T> node) throws Exception {
@@ -83,56 +133,6 @@ public class BinaryTree<T> {
         right.setParent(null);
       }
     }
-  }
-
-  private int getNumberOfNodes(Node<T> node) {
-    int numberOfNodes = 1;
-
-    if(node.getLeft() != null) {
-      numberOfNodes += this.getNumberOfNodes(node.getLeft());
-    }
-    if(node.getRight() != null) {
-      numberOfNodes += this.getNumberOfNodes(node.getRight());
-    }
-    return numberOfNodes;
-  }
-
-  public Node<T> find(Node<T> node, T value) {
-    int compare = this.comparator.compare(value, node.getValue());
-    if(compare == 0)  {
-      return node;
-    }
-    if(node.getLeft() != null) {
-      Node<T> found = this.find(node.getLeft(), value);
-      if(found != null) {
-        return found;
-      }
-    }
-    if(node.getRight() != null) {
-      Node<T> found = this.find(node.getRight(), value);
-      if(found != null) {
-        return found;
-      }
-    }
-    return null;
-  }
-
-  public Node<T> setRight(Node<T> node, T value) throws Exception {
-    if(node.getRight() != null) {
-      throw new Exception("setRight failed because node " + node + " already has a right child.");
-    }
-    Node<T> child = new Node<T>(value, node, null, null);
-    node.setRight(child);
-    return child;
-  }
-
-  public Node<T> setLeft(Node<T> node, T value) throws Exception {
-     if(node.getLeft() != null) {
-      throw new Exception("setLeft failed because node " + node + " already has a Left child.");
-    }
-    Node<T> child = new Node<T>(value, node, null, null);
-    node.setLeft(child);
-    return child;
   }
 }
 

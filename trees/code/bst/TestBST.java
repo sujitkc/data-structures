@@ -1,3 +1,7 @@
+import binarytree.BinaryTree;
+import binarytree.Node;
+import bst.BST;
+import prettyprint.Array;
 import java.util.Comparator;
 import java.lang.Comparable;
 
@@ -41,7 +45,7 @@ public class TestBST {
     return TestBST.toArray(tree.getRoot());
   }
 
-  public static <T extends Comparable> String toArray(BSTNode<T> node) {
+  public static <T extends Comparable> String toArray(Node<T> node) {
     Array array = new Array(node);
     return array.toString();
   }
@@ -56,20 +60,20 @@ public class TestBST {
       }
     );
 
-    BSTNode<Integer> n1  = tree.addNode(3);
-    BSTNode<Integer> n2  = tree.addNode(4);
-    BSTNode<Integer> n3  = tree.addNode(12);
-    BSTNode<Integer> n4  = tree.addNode(14);
-    BSTNode<Integer> n5  = tree.addNode(10);
-    BSTNode<Integer> n6  = tree.addNode(5);
-    BSTNode<Integer> n7  = tree.addNode(1);
-    BSTNode<Integer> n8  = tree.addNode(8);
-    BSTNode<Integer> n9  = tree.addNode(2);
-    BSTNode<Integer> n10 = tree.addNode(7);
-    BSTNode<Integer> n11 = tree.addNode(9);
-    BSTNode<Integer> n12 = tree.addNode(11);
-    BSTNode<Integer> n13 = tree.addNode(6);
-    BSTNode<Integer> n14 = tree.addNode(18);
+    Node<Integer> n1  = tree.addNode(3);
+    Node<Integer> n2  = tree.addNode(4);
+    Node<Integer> n3  = tree.addNode(12);
+    Node<Integer> n4  = tree.addNode(14);
+    Node<Integer> n5  = tree.addNode(10);
+    Node<Integer> n6  = tree.addNode(5);
+    Node<Integer> n7  = tree.addNode(1);
+    Node<Integer> n8  = tree.addNode(8);
+    Node<Integer> n9  = tree.addNode(2);
+    Node<Integer> n10 = tree.addNode(7);
+    Node<Integer> n11 = tree.addNode(9);
+    Node<Integer> n12 = tree.addNode(11);
+    Node<Integer> n13 = tree.addNode(6);
+    Node<Integer> n14 = tree.addNode(18);
 
     System.out.println(TestBST.toArray(tree));
   }
@@ -84,20 +88,20 @@ public class TestBST {
     );
 
     try {
-      BSTNode<Integer> n1  = tree.addNode(3);
-      BSTNode<Integer> n2  = tree.addNode(4);
-      BSTNode<Integer> n3  = tree.addNode(12);
-      BSTNode<Integer> n4  = tree.addNode(14);
-      BSTNode<Integer> n5  = tree.addNode(10);
-      BSTNode<Integer> n6  = tree.addNode(5);
-      BSTNode<Integer> n7  = tree.addNode(1);
-      BSTNode<Integer> n8  = tree.addNode(8);
-      BSTNode<Integer> n9  = tree.addNode(2);
-      BSTNode<Integer> n10 = tree.addNode(7);
-      BSTNode<Integer> n11 = tree.addNode(9);
-      BSTNode<Integer> n12 = tree.addNode(11);
-      BSTNode<Integer> n13 = tree.addNode(6);
-      BSTNode<Integer> n14 = tree.addNode(18);
+      Node<Integer> n1  = tree.addNode(3);
+      Node<Integer> n2  = tree.addNode(4);
+      Node<Integer> n3  = tree.addNode(12);
+      Node<Integer> n4  = tree.addNode(14);
+      Node<Integer> n5  = tree.addNode(10);
+      Node<Integer> n6  = tree.addNode(5);
+      Node<Integer> n7  = tree.addNode(1);
+      Node<Integer> n8  = tree.addNode(8);
+      Node<Integer> n9  = tree.addNode(2);
+      Node<Integer> n10 = tree.addNode(7);
+      Node<Integer> n11 = tree.addNode(9);
+      Node<Integer> n12 = tree.addNode(11);
+      Node<Integer> n13 = tree.addNode(6);
+      Node<Integer> n14 = tree.addNode(18);
 
       System.out.println(TestBST.toArray(tree));
       System.out.println("removing node " + n6 + " ...");
@@ -120,20 +124,20 @@ public class TestBST {
     );
 
     try {
-      BSTNode<Integer> n1  = tree.addNode(3);
-      BSTNode<Integer> n2  = tree.addNode(4);
-      BSTNode<Integer> n3  = tree.addNode(12);
-      BSTNode<Integer> n4  = tree.addNode(14);
-      BSTNode<Integer> n5  = tree.addNode(10);
-      BSTNode<Integer> n6  = tree.addNode(5);
-      BSTNode<Integer> n7  = tree.addNode(1);
-      BSTNode<Integer> n8  = tree.addNode(8);
-      BSTNode<Integer> n9  = tree.addNode(2);
-      BSTNode<Integer> n10 = tree.addNode(7);
-      BSTNode<Integer> n11 = tree.addNode(9);
-      BSTNode<Integer> n12 = tree.addNode(11);
-      BSTNode<Integer> n13 = tree.addNode(6);
-      BSTNode<Integer> n14 = tree.addNode(18);
+      Node<Integer> n1  = tree.addNode(3);
+      Node<Integer> n2  = tree.addNode(4);
+      Node<Integer> n3  = tree.addNode(12);
+      Node<Integer> n4  = tree.addNode(14);
+      Node<Integer> n5  = tree.addNode(10);
+      Node<Integer> n6  = tree.addNode(5);
+      Node<Integer> n7  = tree.addNode(1);
+      Node<Integer> n8  = tree.addNode(8);
+      Node<Integer> n9  = tree.addNode(2);
+      Node<Integer> n10 = tree.addNode(7);
+      Node<Integer> n11 = tree.addNode(9);
+      Node<Integer> n12 = tree.addNode(11);
+      Node<Integer> n13 = tree.addNode(6);
+      Node<Integer> n14 = tree.addNode(18);
 
       System.out.println(TestBST.toArray(tree));
       System.out.println("removing node " + n13 + " ...");
@@ -155,20 +159,20 @@ public class TestBST {
     );
 
     try {
-      BSTNode<Integer> n1  = tree.addNode(3);
-      BSTNode<Integer> n2  = tree.addNode(4);
-      BSTNode<Integer> n3  = tree.addNode(12);
-      BSTNode<Integer> n4  = tree.addNode(14);
-      BSTNode<Integer> n5  = tree.addNode(10);
-      BSTNode<Integer> n6  = tree.addNode(5);
-      BSTNode<Integer> n7  = tree.addNode(1);
-      BSTNode<Integer> n8  = tree.addNode(8);
-      BSTNode<Integer> n9  = tree.addNode(2);
-      BSTNode<Integer> n10 = tree.addNode(7);
-      BSTNode<Integer> n11 = tree.addNode(9);
-      BSTNode<Integer> n12 = tree.addNode(11);
-      BSTNode<Integer> n13 = tree.addNode(6);
-      BSTNode<Integer> n14 = tree.addNode(18);
+      Node<Integer> n1  = tree.addNode(3);
+      Node<Integer> n2  = tree.addNode(4);
+      Node<Integer> n3  = tree.addNode(12);
+      Node<Integer> n4  = tree.addNode(14);
+      Node<Integer> n5  = tree.addNode(10);
+      Node<Integer> n6  = tree.addNode(5);
+      Node<Integer> n7  = tree.addNode(1);
+      Node<Integer> n8  = tree.addNode(8);
+      Node<Integer> n9  = tree.addNode(2);
+      Node<Integer> n10 = tree.addNode(7);
+      Node<Integer> n11 = tree.addNode(9);
+      Node<Integer> n12 = tree.addNode(11);
+      Node<Integer> n13 = tree.addNode(6);
+      Node<Integer> n14 = tree.addNode(18);
 
       System.out.println(TestBST.toArray(tree));
       System.out.println("removing node " + n11 + " ...");
@@ -190,20 +194,20 @@ public class TestBST {
     );
 
     try {
-      BSTNode<Integer> n1  = tree.addNode(3);
-      BSTNode<Integer> n2  = tree.addNode(4);
-      BSTNode<Integer> n3  = tree.addNode(12);
-      BSTNode<Integer> n4  = tree.addNode(14);
-      BSTNode<Integer> n5  = tree.addNode(10);
-      BSTNode<Integer> n6  = tree.addNode(5);
-      BSTNode<Integer> n7  = tree.addNode(1);
-      BSTNode<Integer> n8  = tree.addNode(8);
-      BSTNode<Integer> n9  = tree.addNode(2);
-      BSTNode<Integer> n10 = tree.addNode(7);
-      BSTNode<Integer> n11 = tree.addNode(9);
-      BSTNode<Integer> n12 = tree.addNode(11);
-      BSTNode<Integer> n13 = tree.addNode(6);
-      BSTNode<Integer> n14 = tree.addNode(18);
+      Node<Integer> n1  = tree.addNode(3);
+      Node<Integer> n2  = tree.addNode(4);
+      Node<Integer> n3  = tree.addNode(12);
+      Node<Integer> n4  = tree.addNode(14);
+      Node<Integer> n5  = tree.addNode(10);
+      Node<Integer> n6  = tree.addNode(5);
+      Node<Integer> n7  = tree.addNode(1);
+      Node<Integer> n8  = tree.addNode(8);
+      Node<Integer> n9  = tree.addNode(2);
+      Node<Integer> n10 = tree.addNode(7);
+      Node<Integer> n11 = tree.addNode(9);
+      Node<Integer> n12 = tree.addNode(11);
+      Node<Integer> n13 = tree.addNode(6);
+      Node<Integer> n14 = tree.addNode(18);
 
       System.out.println(TestBST.toArray(tree));
       System.out.println("removing node " + n3 + " ...");
@@ -225,20 +229,20 @@ public class TestBST {
     );
 
     try {
-      BSTNode<Integer> n1  = tree.addNode(3);
-      BSTNode<Integer> n2  = tree.addNode(4);
-      BSTNode<Integer> n3  = tree.addNode(12);
-      BSTNode<Integer> n4  = tree.addNode(14);
-      BSTNode<Integer> n5  = tree.addNode(10);
-      BSTNode<Integer> n6  = tree.addNode(5);
-      BSTNode<Integer> n7  = tree.addNode(1);
-      BSTNode<Integer> n8  = tree.addNode(8);
-      BSTNode<Integer> n9  = tree.addNode(2);
-      BSTNode<Integer> n10 = tree.addNode(7);
-      BSTNode<Integer> n11 = tree.addNode(9);
-      BSTNode<Integer> n12 = tree.addNode(11);
-      BSTNode<Integer> n13 = tree.addNode(6);
-      BSTNode<Integer> n14 = tree.addNode(18);
+      Node<Integer> n1  = tree.addNode(3);
+      Node<Integer> n2  = tree.addNode(4);
+      Node<Integer> n3  = tree.addNode(12);
+      Node<Integer> n4  = tree.addNode(14);
+      Node<Integer> n5  = tree.addNode(10);
+      Node<Integer> n6  = tree.addNode(5);
+      Node<Integer> n7  = tree.addNode(1);
+      Node<Integer> n8  = tree.addNode(8);
+      Node<Integer> n9  = tree.addNode(2);
+      Node<Integer> n10 = tree.addNode(7);
+      Node<Integer> n11 = tree.addNode(9);
+      Node<Integer> n12 = tree.addNode(11);
+      Node<Integer> n13 = tree.addNode(6);
+      Node<Integer> n14 = tree.addNode(18);
 
       System.out.println(TestBST.toArray(tree));
       System.out.println("removing node " + n5 + " ...");
@@ -260,21 +264,21 @@ public class TestBST {
     );
 
     try {
-      BSTNode<Integer> n1  = tree.addNode(30);
-      BSTNode<Integer> n2  = tree.addNode(40);
-      BSTNode<Integer> n3  = tree.addNode(120);
-      BSTNode<Integer> n4  = tree.addNode(140);
-      BSTNode<Integer> n5  = tree.addNode(150);
-      BSTNode<Integer> n6  = tree.addNode(50);
-      BSTNode<Integer> n7  = tree.addNode(10);
-      BSTNode<Integer> n8  = tree.addNode(80);
-      BSTNode<Integer> n9  = tree.addNode(20);
-      BSTNode<Integer> n10 = tree.addNode(70);
-      BSTNode<Integer> n11 = tree.addNode(90);
-      BSTNode<Integer> n12 = tree.addNode(110);
-      BSTNode<Integer> n13 = tree.addNode(60);
-      BSTNode<Integer> n14 = tree.addNode(180);
-      BSTNode<Integer> n15 = tree.addNode(135);
+      Node<Integer> n1  = tree.addNode(30);
+      Node<Integer> n2  = tree.addNode(40);
+      Node<Integer> n3  = tree.addNode(120);
+      Node<Integer> n4  = tree.addNode(140);
+      Node<Integer> n5  = tree.addNode(150);
+      Node<Integer> n6  = tree.addNode(50);
+      Node<Integer> n7  = tree.addNode(10);
+      Node<Integer> n8  = tree.addNode(80);
+      Node<Integer> n9  = tree.addNode(20);
+      Node<Integer> n10 = tree.addNode(70);
+      Node<Integer> n11 = tree.addNode(90);
+      Node<Integer> n12 = tree.addNode(110);
+      Node<Integer> n13 = tree.addNode(60);
+      Node<Integer> n14 = tree.addNode(180);
+      Node<Integer> n15 = tree.addNode(135);
 
       System.out.println(TestBST.toArray(tree));
       System.out.println("removing node " + n4 + " ...");
@@ -297,24 +301,24 @@ public class TestBST {
     );
 
     try {
-      BSTNode<Integer> n1  = tree.addNode(30);
-      BSTNode<Integer> n2  = tree.addNode(40);
-      BSTNode<Integer> n3  = tree.addNode(120);
-      BSTNode<Integer> n4  = tree.addNode(140);
-      BSTNode<Integer> n5  = tree.addNode(150);
-      BSTNode<Integer> n6  = tree.addNode(50);
-      BSTNode<Integer> n7  = tree.addNode(10);
-      BSTNode<Integer> n8  = tree.addNode(80);
-      BSTNode<Integer> n9  = tree.addNode(20);
-      BSTNode<Integer> n10 = tree.addNode(70);
-      BSTNode<Integer> n11 = tree.addNode(90);
-      BSTNode<Integer> n12 = tree.addNode(110);
-      BSTNode<Integer> n13 = tree.addNode(60);
-      BSTNode<Integer> n14 = tree.addNode(180);
-      BSTNode<Integer> n15 = tree.addNode(135);
+      Node<Integer> n1  = tree.addNode(30);
+      Node<Integer> n2  = tree.addNode(40);
+      Node<Integer> n3  = tree.addNode(120);
+      Node<Integer> n4  = tree.addNode(140);
+      Node<Integer> n5  = tree.addNode(150);
+      Node<Integer> n6  = tree.addNode(50);
+      Node<Integer> n7  = tree.addNode(10);
+      Node<Integer> n8  = tree.addNode(80);
+      Node<Integer> n9  = tree.addNode(20);
+      Node<Integer> n10 = tree.addNode(70);
+      Node<Integer> n11 = tree.addNode(90);
+      Node<Integer> n12 = tree.addNode(110);
+      Node<Integer> n13 = tree.addNode(60);
+      Node<Integer> n14 = tree.addNode(180);
+      Node<Integer> n15 = tree.addNode(135);
 
       System.out.println(TestBST.toArray(tree));
-      BSTNode<Integer> root = tree.getRoot();
+      Node<Integer> root = tree.getRoot();
       System.out.println("removing node " + root + " ...");
       tree.deleteNode(root);
       System.out.println(TestBST.toArray(tree));

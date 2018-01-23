@@ -1,35 +1,41 @@
+package bst;
+
+import binarytree.BinaryTree;
+import binarytree.Node;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Comparator;
 
-public class BST<T extends Comparable> {
-  private BSTNode<T> root;
+public class BST<T extends Comparable> extends BinaryTree<T> {
+//  private Node<T> root;
   private Comparator comparator;
 
   public BST(T value, Comparator comparator) {
-    this.root = new BSTNode<T>(value, null, null, null);
-    this.comparator = comparator;
+    super(value, comparator);
   }
-
-  public BSTNode<T> getRoot() {
+/*
+  public Node<T> getRoot() {
     return this.root;
   }
 
   public int getNumberOfNodes() {
     return this.getNumberOfNodes(this.root);
   }
+*/
 
-  public BSTNode<T> addNode(T value) {
-    BSTNode<T> node = new BSTNode<T>(value, null, null, null);
+  public Node<T> addNode(T value) {
+    Node<T> node = new Node<T>(value, null, null, null);
     this.addNode(root, node);
     return node;
   }
 
-  public BSTNode<T> find(T value) {
+/*
+  public Node<T> find(T value) {
     return this.find(root, value);
   }
 
-  private int getNumberOfNodes(BSTNode<T> node) {
+  private int getNumberOfNodes(Node<T> node) {
     int numberOfNodes = 1;
 
     if(node.getLeft() != null) {
@@ -40,20 +46,21 @@ public class BST<T extends Comparable> {
     }
     return numberOfNodes;
   }
+*/
 
-  private BSTNode<T> find(BSTNode<T> node, T value) {
+  private Node<T> find(Node<T> node, T value) {
     int compare = this.comparator.compare(value, node.getValue());
     if(compare == 0)  {
       return node;
     }
     if(node.getLeft() != null) {
-      BSTNode<T> found = this.find(node.getLeft(), value);
+      Node<T> found = this.find(node.getLeft(), value);
       if(found != null) {
         return found;
       }
     }
     if(node.getRight() != null) {
-      BSTNode<T> found = this.find(node.getRight(), value);
+      Node<T> found = this.find(node.getRight(), value);
       if(found != null) {
         return found;
       }
@@ -61,32 +68,34 @@ public class BST<T extends Comparable> {
     return null;
   }
 
-  public BSTNode<T> setRight(BSTNode<T> node, T value) throws Exception {
+/*
+  public Node<T> setRight(Node<T> node, T value) throws Exception {
     if(node.getRight() != null) {
       throw new Exception("setRight failed because node " + node + " already has a right child.");
     }
-    BSTNode<T> child = new BSTNode<T>(value, node, null, null);
+    Node<T> child = new Node<T>(value, node, null, null);
     node.setRight(child);
     return child;
   }
 
-  public BSTNode<T> setLeft(BSTNode<T> node, T value) throws Exception {
+  public Node<T> setLeft(Node<T> node, T value) throws Exception {
      if(node.getLeft() != null) {
       throw new Exception("setLeft failed because node " + node + " already has a Left child.");
     }
-    BSTNode<T> child = new BSTNode<T>(value, node, null, null);
+    Node<T> child = new Node<T>(value, node, null, null);
     node.setLeft(child);
     return child;
   }
+*/
 
-  public void deleteNode(BSTNode<T> node) throws Exception {
-    BSTNode<T> right = node.getRight();
-    BSTNode<T> left = node.getLeft();
+  public void deleteNode(Node<T> node) throws Exception {
+    Node<T> right = node.getRight();
+    Node<T> left = node.getLeft();
 
     if(this.root != node) {
-      BSTNode<T> parent = node.getParent();
-      BSTNode<T> l = parent.getLeft();
-      BSTNode<T> r = parent.getRight();
+      Node<T> parent = node.getParent();
+      Node<T> l = parent.getLeft();
+      Node<T> r = parent.getRight();
       if(left == null && right == null) {
         if(node == l) {
           parent.setLeft(null);
@@ -116,7 +125,7 @@ public class BST<T extends Comparable> {
         }   
       }
       else { // both left and right child exist.
-        BSTNode<T> minmax = this.largest(left);
+        Node<T> minmax = this.largest(left);
         node.setValue(minmax.getValue());
         this.deleteNode(minmax);
       }
@@ -134,28 +143,28 @@ public class BST<T extends Comparable> {
         right.setParent(null);
       }
       else { // (both left and right child exist.
-        BSTNode<T> minmax = this.largest(left);
+        Node<T> minmax = this.largest(left);
         node.setValue(minmax.getValue());
         this.deleteNode(minmax);
       }
     }
   }
 
-  public BSTNode<T> smallest(BSTNode<T> node) {
+  private Node<T> smallest(Node<T> node) {
     if(node.getLeft() == null) {
       return node;
     }
     return this.smallest(node.getLeft());
   }
 
-  public BSTNode<T> largest(BSTNode<T> node) {
+  private Node<T> largest(Node<T> node) {
     if(node.getRight() == null) {
       return node;
     }
     return this.largest(node.getRight());
   }
 
-  public void addNode(BSTNode<T> parent, BSTNode<T> node) {
+  public void addNode(Node<T> parent, Node<T> node) {
     int compare = node.getValue().compareTo(parent.getValue());
     if(compare == 0)  {
       return;
@@ -181,53 +190,3 @@ public class BST<T extends Comparable> {
   }
 }
 
-class BSTNode<T extends Comparable> {
-
-  private T value;
-  private BSTNode<T> parent;
-  private BSTNode<T> left;
-  private BSTNode<T> right;
-
-  public BSTNode(T value, BSTNode<T> parent, BSTNode<T> left, BSTNode<T> right) {
-    this.value = value;
-    this.parent = parent;
-    this.left  = left;
-    this.right = right;
-  }
-
-  public T getValue() {
-    return this.value;
-  }
- 
-  public BSTNode<T> getParent() {
-    return this.parent;
-  }
- 
-  public BSTNode<T> getLeft() {
-    return this.left;
-  }
-
-  public BSTNode<T> getRight() {
-    return this.right;
-  }
-
-  public String toString() {
-    return this.value.toString();
-  }
-
-  public void setValue(T value) {
-    this.value = value;
-  }
-
-  public void setParent(BSTNode<T> node) {
-    this.parent = node;
-  }
-
-  public void setRight(BSTNode<T> node) {
-    this.right = node;
-  }
-
-  public void setLeft(BSTNode<T> node) {
-    this.left = node;
-  }
-}

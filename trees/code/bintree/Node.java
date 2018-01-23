@@ -34,6 +34,10 @@ public class Node<T> {
     return this.value.toString();
   }
 
+  public void setValue(T value) {
+    this.value = value;
+  }
+
   public void setParent(Node<T> node) {
     this.parent = node;
   }
