@@ -1,3 +1,5 @@
+import binarytree.BinaryTree;
+import binarytree.Node;
 import java.util.Comparator;
 
 public class TestTraversal {

@@ -41,7 +41,7 @@ public class BST<T extends Comparable> {
     return numberOfNodes;
   }
 
-  public BSTNode<T> find(BSTNode<T> node, T value) {
+  private BSTNode<T> find(BSTNode<T> node, T value) {
     int compare = this.comparator.compare(value, node.getValue());
     if(compare == 0)  {
       return node;

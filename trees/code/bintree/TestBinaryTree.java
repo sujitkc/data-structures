@@ -1,3 +1,6 @@
+import binarytree.BinaryTree;
+import binarytree.Node;
+import prettyprint.Array;
 import java.util.Comparator;
 
 public class TestBinaryTree {
@@ -82,9 +85,17 @@ public class TestBinaryTree {
 
       System.out.println("size = " + tree.getNumberOfNodes());
 
+      System.out.println(new Array(tree.getRoot()));
+
+      System.out.println("deleting " + n6);
       tree.deleteNode(n6); // delete(4)
-      tree.deleteNode(n6); // delete(10)
+      System.out.println(new Array(tree.getRoot()));
+      System.out.println("deleting " + n3);
+      tree.deleteNode(n3); // delete(10)
+      System.out.println(new Array(tree.getRoot()));
+      System.out.println("deleting " + n10);
       tree.deleteNode(n10); // delete(27)
+      System.out.println(new Array(tree.getRoot()));
 
       System.out.println("size = " + tree.getNumberOfNodes());
     }

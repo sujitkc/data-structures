@@ -1,7 +1,11 @@
+package prettyprint;
+
+import binarytree.BinaryTree;
+import binarytree.Node;
 import java.util.Map;
 import java.util.HashMap;
 
-class Array {
+public class Array {
   private Character[][] array;
   private final String title;
   public final int numberOfColumns;
@@ -17,7 +21,7 @@ class Array {
     this.title = "";
   }
 
-  public Array(BSTNode node) {
+  public Array(Node node) {
     Array left = new Array();
     Array right = new Array();
 
@@ -43,7 +47,7 @@ class Array {
     // place hangers
     this.array[1][this.numberOfColumns / 2] = '|';
 
-    int startBars; // x-coordinate where the horizontal bars of the hanger start.
+    int startBars;
     int numberOfBars;
 
     startBars = left.numberOfColumns / 2;

@@ -1,13 +1,12 @@
-JUNIT=/usr/share/java/junit4.jar
+INC=-cp .:classes
 
 bt :
-	javac TestBinaryTree.java
-	java TestBinaryTree
+	javac -d classes Node.java BinaryTree.java ../prettyprint/Array.java TestBinaryTree.java
+	java $(INC) TestBinaryTree
 
 traversal :
-	javac TestTraversal.java
-	java TestTraversal
+	javac -d classes Node.java BinaryTree.java Traversal.java TestTraversal.java
+	java $(INC) TestTraversal
 
-tree :
-	javac TestTree.java
-	java TestTree
+clean:
+	rm -rf classes/*

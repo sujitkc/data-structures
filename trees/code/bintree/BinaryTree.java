@@ -1,7 +1,9 @@
+package binarytree;
+
 import java.util.Comparator;
 
 public class BinaryTree<T> {
-  private Node<T> root;
+  protected Node<T> root;
   private Comparator<T> comparator;
 
   public BinaryTree(T value, Comparator<T> comparator) {
@@ -51,7 +53,8 @@ public class BinaryTree<T> {
         }
         else {
           parent.setRight(left);
-        }   
+        }
+        left.setParent(parent);   
       }
       else { // right != null
         Node<T> parent = node.getParent();
@@ -64,6 +67,7 @@ public class BinaryTree<T> {
         else {
           parent.setRight(right);
         }   
+        right.setParent(parent);
       }
     }
     else {// if(this.root == node)
@@ -71,10 +75,12 @@ public class BinaryTree<T> {
         this.root = null;
       }
       else if(left != null) {
-        this.root = left;   
+        this.root = left;
+        left.setParent(null);
       }
       else { // right != null
-        this.root = right;   
+        this.root = right;
+        right.setParent(null);
       }
     }
   }
@@ -130,45 +136,3 @@ public class BinaryTree<T> {
   }
 }
 
-class Node<T> {
-
-  private T value;
-  private Node<T> parent;
-  private Node<T> left;
-  private Node<T> right;
-
-  public Node(T value, Node<T> parent, Node<T> left, Node<T> right) {
-    this.value = value;
-    this.parent = parent;
-    this.left  = left;
-    this.right = right;
-  }
-
-  public T getValue() {
-    return this.value;
-  }
- 
-  public Node<T> getParent() {
-    return this.parent;
-  }
- 
-  public Node<T> getLeft() {
-    return this.left;
-  }
-
-  public Node<T> getRight() {
-    return this.right;
-  }
-
-  public String toString() {
-    return this.value.toString();
-  }
-
-  public void setRight(Node<T> node) {
-    this.right = node;
-  }
-
-  public void setLeft(Node<T> node) {
-    this.left = node;
-  }
-}
