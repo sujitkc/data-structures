@@ -5,7 +5,7 @@ bt :
 	java $(INC) TestBinaryTree
 
 traversal :
-	javac -d classes Node.java BinaryTree.java Traversal.java TestTraversal.java
+	javac -d classes Node.java BinaryTree.java Traversal.java ../prettyprint/Array.java TestTraversal.java
 	java $(INC) TestTraversal
 
 clean:

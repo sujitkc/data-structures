@@ -1,5 +1,7 @@
 import binarytree.BinaryTree;
 import binarytree.Node;
+import prettyprint.Array;
+
 import java.util.Comparator;
 
 public class TestTraversal {
@@ -32,6 +34,8 @@ public class TestTraversal {
       Node<Integer> n10 = tree.setRight(n5, 27);
       Node<Integer> n11 = tree.setLeft(n10, 25);
       Node<Integer> n12 = tree.setRight(n11, 26);
+
+      System.out.println(new Array(tree.getRoot()));
     }
     catch(Exception e) {
       System.out.println(e.getMessage());

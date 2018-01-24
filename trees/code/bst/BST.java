@@ -8,21 +8,11 @@ import java.util.HashMap;
 import java.util.Comparator;
 
 public class BST<T extends Comparable> extends BinaryTree<T> {
-//  private Node<T> root;
   private Comparator comparator;
 
   public BST(T value, Comparator comparator) {
     super(value, comparator);
   }
-/*
-  public Node<T> getRoot() {
-    return this.root;
-  }
-
-  public int getNumberOfNodes() {
-    return this.getNumberOfNodes(this.root);
-  }
-*/
 
   public Node<T> addNode(T value) {
     Node<T> node = new Node<T>(value, null, null, null);
@@ -30,63 +20,28 @@ public class BST<T extends Comparable> extends BinaryTree<T> {
     return node;
   }
 
-/*
-  public Node<T> find(T value) {
-    return this.find(root, value);
-  }
-
-  private int getNumberOfNodes(Node<T> node) {
-    int numberOfNodes = 1;
-
-    if(node.getLeft() != null) {
-      numberOfNodes += this.getNumberOfNodes(node.getLeft());
-    }
-    if(node.getRight() != null) {
-      numberOfNodes += this.getNumberOfNodes(node.getRight());
-    }
-    return numberOfNodes;
-  }
-*/
-
   private Node<T> find(Node<T> node, T value) {
     int compare = this.comparator.compare(value, node.getValue());
     if(compare == 0)  {
       return node;
     }
-    if(node.getLeft() != null) {
-      Node<T> found = this.find(node.getLeft(), value);
-      if(found != null) {
-        return found;
+    else if(compare < 0) {
+      if(node.getLeft() != null) {
+        return this.find(node.getLeft(), value);
+      }
+      else{
+        return null;
       }
     }
-    if(node.getRight() != null) {
-      Node<T> found = this.find(node.getRight(), value);
-      if(found != null) {
-        return found;
+    else {
+      if(node.getRight() != null) {
+        return this.find(node.getRight(), value);
+      }
+      else {
+        return null;
       }
     }
-    return null;
   }
-
-/*
-  public Node<T> setRight(Node<T> node, T value) throws Exception {
-    if(node.getRight() != null) {
-      throw new Exception("setRight failed because node " + node + " already has a right child.");
-    }
-    Node<T> child = new Node<T>(value, node, null, null);
-    node.setRight(child);
-    return child;
-  }
-
-  public Node<T> setLeft(Node<T> node, T value) throws Exception {
-     if(node.getLeft() != null) {
-      throw new Exception("setLeft failed because node " + node + " already has a Left child.");
-    }
-    Node<T> child = new Node<T>(value, node, null, null);
-    node.setLeft(child);
-    return child;
-  }
-*/
 
   public void deleteNode(Node<T> node) throws Exception {
     Node<T> right = node.getRight();
@@ -189,4 +144,3 @@ public class BST<T extends Comparable> extends BinaryTree<T> {
     }
   }
 }
-

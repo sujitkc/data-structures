@@ -2,6 +2,7 @@ import binarytree.BinaryTree;
 import binarytree.Node;
 import bst.BST;
 import prettyprint.Array;
+
 import java.util.Comparator;
 import java.lang.Comparable;
 
@@ -20,7 +21,7 @@ public class TestBST {
   }
 
   public static void t1() {
-    BST<String> tree = new BST<String>("Ajmer",
+    BST<String> tree = new BST<String>("Nagpur",
       new Comparator<Comparable>() {
         public int compare(Comparable i1,Comparable i2) {
           return i1.compareTo(i2);
@@ -28,7 +29,7 @@ public class TestBST {
       }
     );
 
-    tree.addNode("Nagpur");
+    tree.addNode("Ajmer");
     tree.addNode("Hyderabad");
     tree.addNode("Kanpur");
     tree.addNode("Zambia");
