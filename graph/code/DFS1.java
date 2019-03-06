@@ -2,6 +2,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 public class DFS1 {
 
@@ -46,5 +48,6 @@ public class DFS1 {
     for(Node<Integer> neighbour : graph.getAllNeighbours(node)) {
       DFS1.dfs_rec(graph, neighbour, dfs_nums);
     }
+    return;
   }
 }

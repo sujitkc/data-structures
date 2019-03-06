@@ -13,7 +13,10 @@ public class Edge<T> {
   }
 
   public boolean equals(Edge<T> e) {
-    return (this.n1.equals(e.n1) && this.n2.equals(n2)) ||
-      (this.n2.equals(e.n1) && this.n1.equals(n2));
+    if(e instanceof Edge) {
+      return (this.n1.equals(e.n1) && this.n2.equals(n2)) ||
+        (this.n2.equals(e.n1) && this.n1.equals(n2));
+    }
+    return false;
   }
 }
