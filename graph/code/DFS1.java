@@ -7,8 +7,15 @@ import java.util.ArrayList;
 
 public class DFS1 {
 
+  private static Set<Node<Integer>> visited = new HashSet<Node<Integer>>();
+
   public static void main(String[] args) {
-    MyGraph<Integer> graph = new EdgeList<Integer>();
+
+    // comment out two out of the following three lines
+    // based on which graph implementation you wish to use.
+    // MyGraph<Integer> graph = new EdgeList<Integer>();
+    MyGraph<Integer> graph = new AdjacencyMatrix<Integer>();
+    // MyGraph<Integer> graph = new AdjacencyList<Integer>();
 
     Node<Integer> n1 = graph.addNode(1);
     Node<Integer> n2 = graph.addNode(2);
@@ -36,18 +43,36 @@ public class DFS1 {
 
   public static Map<Node<Integer>, Integer> dfs(MyGraph<Integer> graph, Node<Integer> node) throws Exception {
     Map<Node<Integer>, Integer> dfs_nums = new HashMap<Node<Integer>, Integer>();
-    DFS1.dfs_rec(graph, node, dfs_nums);
+    DFS1.visited.clear();
+    
+    // comment out one of the following two lines of code
+    // based on whether you wish to do pre-order or post-order DFS.
+    DFS1.dfs_preorder(graph, node, dfs_nums);  // for pre-order DFS
+    // DFS1.dfs_postorder(graph, node, dfs_nums);  // for post-order DFS
     return dfs_nums;
   }
 
-  private static void dfs_rec(MyGraph<Integer> graph, Node<Integer> node, Map<Node<Integer>, Integer> dfs_nums) throws Exception {
-    if(dfs_nums.containsKey(node)) {
+  private static void dfs_preorder(MyGraph<Integer> graph, Node<Integer> node, Map<Node<Integer>, Integer> dfs_nums) throws Exception {
+    if(DFS1.visited.contains(node)) {
       return;
     }
-    dfs_nums.put(node, dfs_nums.size());
+    DFS1.visited.add(node);
+    dfs_nums.put(node, dfs_nums.size()); // process
     for(Node<Integer> neighbour : graph.getAllNeighbours(node)) {
-      DFS1.dfs_rec(graph, neighbour, dfs_nums);
+      DFS1.dfs_preorder(graph, neighbour, dfs_nums);
     }
+    return;
+  }
+
+  private static void dfs_postorder(MyGraph<Integer> graph, Node<Integer> node, Map<Node<Integer>, Integer> dfs_nums) throws Exception {
+    if(DFS1.visited.contains(node)) {
+      return;
+    }
+    DFS1.visited.add(node);
+    for(Node<Integer> neighbour : graph.getAllNeighbours(node)) {
+      DFS1.dfs_postorder(graph, neighbour, dfs_nums);
+    }
+    dfs_nums.put(node, dfs_nums.size()); // process
     return;
   }
 }

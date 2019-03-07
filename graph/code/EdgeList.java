@@ -21,7 +21,7 @@ public class EdgeList<T> implements MyGraph<T> {
     if(!this.nodes.contains(n1) || !this.nodes.contains(n2)) {
       throw new Exception("At least one of the nodes not contained in this graph.");
     }
-    Edge<T> edge = new Edge(n1, n2);
+    Edge<T> edge = new Edge<T>(n1, n2);
     this.edges.add(edge);
     return edge;
   }

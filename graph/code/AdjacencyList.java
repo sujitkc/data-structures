@@ -26,7 +26,7 @@ public class AdjacencyList<T> implements MyGraph<T>{
     this.neighbours.get(n1).add(n2);
     this.neighbours.get(n2).add(n1);
 
-    return new Edge(n1, n2);
+    return new Edge<T>(n1, n2);
   }
 
 

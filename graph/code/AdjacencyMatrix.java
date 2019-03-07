@@ -12,7 +12,7 @@ public class AdjacencyMatrix<T> implements MyGraph<T>{
 
   public Set<Node<T>> getAllNodes() {
     Set<Node<T>> set = new HashSet<Node<T>>();
-    for(Node n : this.nodes) {
+    for(Node<T> n : this.nodes) {
       set.add(n);
     }
     return set;
